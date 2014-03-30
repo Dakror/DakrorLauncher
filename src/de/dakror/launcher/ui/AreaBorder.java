@@ -1,5 +1,6 @@
 package de.dakror.launcher.ui;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
@@ -24,6 +25,7 @@ public class AreaBorder extends AbstractBorder
 	{
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setColor(color);
+		g2.setStroke(new BasicStroke(2f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 		g2.draw(Assistant.getClipArea(x, y, width, height));
 	}
 }
