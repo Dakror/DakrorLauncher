@@ -49,7 +49,7 @@ public class DakrorLauncher extends JFrame
 	TitlePanel titlePanel = new TitlePanel();
 	StatusPanel statusPanel = new StatusPanel();
 	
-	public AppDetailPanel appDetailPanel;
+	public AppDetailPanel appDetailPanel = new AppDetailPanel();
 	public JScrollPane appListPane;
 	
 	public SLKeyframe login2main;
@@ -113,7 +113,7 @@ public class DakrorLauncher extends JFrame
 	{
 		login2main = new SLKeyframe(mainConfig, 0.6f).setEndSideForOldCmps(SLSide.LEFT).setDelay(0.2f, appListPane, statusPanel).setDelay(0.5f, titlePanel).setStartSide(SLSide.TOP, titlePanel).setStartSide(SLSide.BOTTOM, appListPane, statusPanel);
 		main2login = new SLKeyframe(loginConfig, 0.6f).setEndSide(SLSide.TOP, titlePanel).setEndSide(SLSide.BOTTOM, appListPane).setDelay(0.2f, loginPanel).setStartSideForNewCmps(SLSide.LEFT);
-		main2app = new SLKeyframe(appConfig, 0.6f).setEndSide(SLSide.BOTTOM, appListPane).setDelay(0.2f, loginPanel).setStartSideForNewCmps(SLSide.LEFT);
+		main2app = new SLKeyframe(appConfig, 0.6f).setEndSide(SLSide.TOP, appListPane).setDelay(0.2f, appDetailPanel).setStartSideForNewCmps(SLSide.BOTTOM);
 	}
 	
 	public static void main(String[] args)

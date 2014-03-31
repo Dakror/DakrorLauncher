@@ -123,7 +123,8 @@ public class AppPanel extends JPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				DakrorLauncher.currentLauncher.appDetailPanel = new AppDetailPanel(AppPanel.this.app);
+				DakrorLauncher.currentLauncher.appDetailPanel.setApp(AppPanel.this.app);
+				DakrorLauncher.slPanel.createTransition().push(DakrorLauncher.currentLauncher.main2app).play();
 			}
 		});
 		if (app.getStatus() != AppStatus.NOT_INSTALLED) status.setIcon(new ImageIcon(Game.getImage("status/" + app.getStatus().name().toLowerCase() + ".png").getScaledInstance(99, 99, Image.SCALE_DEFAULT)));
