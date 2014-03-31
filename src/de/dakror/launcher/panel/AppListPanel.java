@@ -14,7 +14,7 @@ public class AppListPanel extends JPanel
 	public AppListPanel()
 	{
 		setSize(1200, 900);
-		setLayout(new FlowLayout(FlowLayout.CENTER, 5, 50));
+		setLayout(new FlowLayout(FlowLayout.CENTER, 15, 50));
 		setOpaque(false);
 	}
 }

@@ -3,17 +3,27 @@ package de.dakror.launcher.panel;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Polygon;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.awt.geom.Area;
 import java.awt.geom.RoundRectangle2D;
+import java.awt.image.BufferedImage;
 
+import javax.swing.AbstractAction;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
@@ -21,10 +31,10 @@ import javax.swing.JSeparator;
 import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
 
+import de.dakror.launcher.DakrorLauncher;
 import de.dakror.launcher.Game;
 import de.dakror.launcher.app.App;
 import de.dakror.launcher.app.AppStatus;
-import de.dakror.launcher.ui.AreaBorder;
 import de.dakror.launcher.util.Assistant;
 
 /**
@@ -35,10 +45,16 @@ public class AppPanel extends JPanel
 	private static final long serialVersionUID = 1L;
 	
 	App app;
+	JLabel bg;
 	
 	public AppPanel(App app)
 	{
 		this.app = app;
+		
+		final Polygon p = new Polygon();
+		p.addPoint(0, 99);
+		p.addPoint(99, 99);
+		p.addPoint(99, 0);
 		
 		setPreferredSize(new Dimension(250, 400));
 		setOpaque(false);
@@ -77,15 +93,15 @@ public class AppPanel extends JPanel
 		desc.setForeground(Color.WHITE);
 		desc.setText(app.getDescription());
 		desc.setEditable(false);
-		desc.setBounds(0, 177, 249, 123);
+		desc.setBounds(1, 177, 248, 123);
 		layeredPane.add(desc);
 		
 		JPanel descBg = new JPanel();
-		descBg.setBounds(0, 177, 249, 123);
+		descBg.setBounds(1, 177, 248, 123);
 		descBg.setBackground(new Color(0, 0, 0, 0.6f));
 		layeredPane.add(descBg);
 		
-		JLabel bg = new JLabel("")
+		bg = new JLabel("")
 		{
 			private static final long serialVersionUID = 1L;
 			
@@ -93,30 +109,62 @@ public class AppPanel extends JPanel
 			public void paint(Graphics g)
 			{
 				g.setClip(Assistant.getClipArea(0, 0, getWidth() + 1, 399));
-				Image img = Game.getImage(AppPanel.this.app.getBgFile());
-				g.drawImage(img, (250 - img.getWidth(null)) / 2, (400 - img.getHeight(null)) / 2, null);
 				super.paint(g);
 			}
 		};
-		bg.setIcon(null);
+		bg.setIcon(new ImageIcon(new BufferedImage(248, 399, BufferedImage.TYPE_INT_RGB)));
 		bg.setBounds(1, 1, 248, 399);
 		layeredPane.add(bg);
 		
-		JPanel status = new JPanel()
+		final JButton status = new JButton(new AbstractAction()
 		{
 			private static final long serialVersionUID = 1L;
 			
 			@Override
-			public void paint(Graphics g)
+			public void actionPerformed(ActionEvent e)
 			{
-				Image img = Game.getImage("status/" + AppPanel.this.app.getStatus().name().toLowerCase() + ".png");
-				g.drawImage(img, 0, 0, 99, 99, null);
+				DakrorLauncher.currentLauncher.appDetailPanel = new AppDetailPanel(AppPanel.this.app);
 			}
-		};
-		status.setOpaque(false);
+		});
+		if (app.getStatus() != AppStatus.NOT_INSTALLED) status.setIcon(new ImageIcon(Game.getImage("status/" + app.getStatus().name().toLowerCase() + ".png").getScaledInstance(99, 99, Image.SCALE_DEFAULT)));
+		status.setContentAreaFilled(false);
+		status.setBorderPainted(false);
+		status.setFocusPainted(false);
+		status.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseExited(MouseEvent e)
+			{
+				setCursor(Cursor.getDefaultCursor());
+			}
+		});
+		status.addMouseMotionListener(new MouseMotionAdapter()
+		{
+			@Override
+			public void mouseMoved(MouseEvent e)
+			{
+				if (p.contains(e.getPoint())) setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				else setCursor(Cursor.getDefaultCursor());
+			}
+		});
 		status.setVisible(app.getStatus() != AppStatus.NOT_INSTALLED);
 		status.setBounds(150, 300, 99, 99);
 		layeredPane.add(status);
+		
+		new Thread()
+		{
+			@Override
+			public void run()
+			{
+				BufferedImage bi = new BufferedImage(248, 399, BufferedImage.TYPE_INT_ARGB);
+				Graphics2D g = (Graphics2D) bi.getGraphics();
+				
+				Image img = Game.getImage(AppPanel.this.app.getBgFile());
+				
+				g.drawImage(img, (250 - img.getWidth(null)) / 2, (400 - img.getHeight(null)) / 2, null);
+				bg.setIcon(new ImageIcon(bi));
+			}
+		}.start();
 	}
 	
 	@Override
@@ -129,8 +177,8 @@ public class AppPanel extends JPanel
 			Area a = new Area(new RoundRectangle2D.Double(0, 0, getWidth() - 1, getHeight() - 1, rad, rad));
 			a.add(new Area(new Rectangle(getWidth() - rad - 1, 0, rad, rad)));
 			a.add(new Area(new Rectangle(0, getHeight() - rad - 1, rad, rad)));
-			
 			a.add(new Area(new Rectangle(getWidth() - rad - 1, getHeight() - rad - 1, rad, rad)));
+			
 			super.paint(g);
 			
 			g.setColor(Color.gray);
@@ -139,8 +187,10 @@ public class AppPanel extends JPanel
 		}
 		else
 		{
-			new AreaBorder(Color.gray).paintBorder(null, g, 0, 0, getWidth(), getHeight());
 			super.paint(g);
+			g.setColor(Color.gray);
+			((Graphics2D) g).setStroke(new BasicStroke(1));
+			((Graphics2D) g).draw(Assistant.getClipArea(0, 0, getWidth(), getHeight()));
 		}
 	}
 }

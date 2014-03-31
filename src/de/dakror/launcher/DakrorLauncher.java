@@ -25,6 +25,7 @@ import com.jtattoo.plaf.acryl.AcrylLookAndFeel;
 import de.dakror.gamesetup.util.swing.TexturedPanel;
 import de.dakror.launcher.app.App;
 import de.dakror.launcher.app.AppStatus;
+import de.dakror.launcher.panel.AppDetailPanel;
 import de.dakror.launcher.panel.AppListPanel;
 import de.dakror.launcher.panel.AppPanel;
 import de.dakror.launcher.panel.LoginPanel;
@@ -42,15 +43,18 @@ public class DakrorLauncher extends JFrame
 	public static DakrorLauncher currentLauncher;
 	public static SLPanel slPanel = new SLPanel();
 	
-	SLConfig loginConfig, mainConfig;
+	SLConfig loginConfig, mainConfig, appConfig;
 	
 	LoginPanel loginPanel = new LoginPanel();
 	TitlePanel titlePanel = new TitlePanel();
 	StatusPanel statusPanel = new StatusPanel();
+	
+	public AppDetailPanel appDetailPanel;
 	public JScrollPane appListPane;
 	
 	public SLKeyframe login2main;
 	public SLKeyframe main2login;
+	public SLKeyframe main2app;
 	
 	public DakrorLauncher()
 	{
@@ -99,6 +103,7 @@ public class DakrorLauncher extends JFrame
 		
 		loginConfig = new SLConfig(slPanel).gap(0, 0).row(250).row(1f).row(1f).row(1f).row(1f).col(1f).place(0, 0, banner).beginGrid(2, 0).row(1f).row(loginPanel.getHeight()).row(1f).col(1f).col(loginPanel.getWidth()).col(1f).place(1, 1, loginPanel).endGrid();
 		mainConfig = new SLConfig(slPanel).gap(0, 0).row(90).col(1f).place(0, 0, titlePanel).row(1f).place(1, 0, appListPane).row(32).place(2, 0, statusPanel);
+		appConfig = new SLConfig(slPanel).gap(0, 0).row(90).col(1f).place(0, 0, titlePanel).row(1f).place(1, 0, appDetailPanel).row(32).place(2, 0, statusPanel);
 		
 		slPanel.setTweenManager(SLAnimator.createTweenManager());
 		slPanel.initialize(loginConfig);
@@ -108,7 +113,7 @@ public class DakrorLauncher extends JFrame
 	{
 		login2main = new SLKeyframe(mainConfig, 0.6f).setEndSideForOldCmps(SLSide.LEFT).setDelay(0.2f, appListPane, statusPanel).setDelay(0.5f, titlePanel).setStartSide(SLSide.TOP, titlePanel).setStartSide(SLSide.BOTTOM, appListPane, statusPanel);
 		main2login = new SLKeyframe(loginConfig, 0.6f).setEndSide(SLSide.TOP, titlePanel).setEndSide(SLSide.BOTTOM, appListPane).setDelay(0.2f, loginPanel).setStartSideForNewCmps(SLSide.LEFT);
-		
+		main2app = new SLKeyframe(appConfig, 0.6f).setEndSide(SLSide.BOTTOM, appListPane).setDelay(0.2f, loginPanel).setStartSideForNewCmps(SLSide.LEFT);
 	}
 	
 	public static void main(String[] args)
