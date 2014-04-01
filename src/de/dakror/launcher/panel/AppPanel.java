@@ -35,6 +35,7 @@ import de.dakror.launcher.DakrorLauncher;
 import de.dakror.launcher.Game;
 import de.dakror.launcher.app.App;
 import de.dakror.launcher.app.AppStatus;
+import de.dakror.launcher.settings.UIStateChange.UIState;
 import de.dakror.launcher.util.Assistant;
 
 /**
@@ -124,7 +125,7 @@ public class AppPanel extends JPanel
 			public void actionPerformed(ActionEvent e)
 			{
 				DakrorLauncher.currentLauncher.appDetailPanel.setApp(AppPanel.this.app);
-				DakrorLauncher.slPanel.createTransition().push(DakrorLauncher.currentLauncher.main2app).play();
+				DakrorLauncher.currentLauncher.slideTo(UIState.APP_DETAIL);
 			}
 		});
 		if (app.getStatus() != AppStatus.NOT_INSTALLED) status.setIcon(new ImageIcon(Game.getImage("status/" + app.getStatus().name().toLowerCase() + ".png").getScaledInstance(99, 99, Image.SCALE_DEFAULT)));

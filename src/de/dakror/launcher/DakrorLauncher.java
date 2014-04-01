@@ -1,9 +1,13 @@
 package de.dakror.launcher;
 
+import static aurelienribon.slidinglayout.SLSide.*;
+import static de.dakror.launcher.settings.UIStateChange.UIState.*;
+
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
+import java.util.HashMap;
 import java.util.Properties;
 
 import javax.swing.BorderFactory;
@@ -17,8 +21,8 @@ import javax.swing.UIManager;
 import aurelienribon.slidinglayout.SLAnimator;
 import aurelienribon.slidinglayout.SLConfig;
 import aurelienribon.slidinglayout.SLKeyframe;
+import aurelienribon.slidinglayout.SLKeyframe.Callback;
 import aurelienribon.slidinglayout.SLPanel;
-import aurelienribon.slidinglayout.SLSide;
 
 import com.jtattoo.plaf.acryl.AcrylLookAndFeel;
 
@@ -31,6 +35,8 @@ import de.dakror.launcher.panel.AppPanel;
 import de.dakror.launcher.panel.LoginPanel;
 import de.dakror.launcher.panel.StatusPanel;
 import de.dakror.launcher.panel.TitlePanel;
+import de.dakror.launcher.settings.UIStateChange;
+import de.dakror.launcher.settings.UIStateChange.UIState;
 import de.dakror.launcher.util.Assistant;
 
 /**
@@ -43,8 +49,6 @@ public class DakrorLauncher extends JFrame
 	public static DakrorLauncher currentLauncher;
 	public static SLPanel slPanel = new SLPanel();
 	
-	SLConfig loginConfig, mainConfig, appConfig;
-	
 	LoginPanel loginPanel = new LoginPanel();
 	TitlePanel titlePanel = new TitlePanel();
 	StatusPanel statusPanel = new StatusPanel();
@@ -52,9 +56,10 @@ public class DakrorLauncher extends JFrame
 	public AppDetailPanel appDetailPanel = new AppDetailPanel();
 	public JScrollPane appListPane;
 	
-	public SLKeyframe login2main;
-	public SLKeyframe main2login;
-	public SLKeyframe main2app;
+	public UIState state;
+	
+	HashMap<UIState, SLConfig> configs = new HashMap<>();
+	HashMap<UIStateChange, SLKeyframe> frames = new HashMap<>();
 	
 	public DakrorLauncher()
 	{
@@ -79,6 +84,8 @@ public class DakrorLauncher extends JFrame
 	
 	public void initComponents()
 	{
+		state = LOGIN;
+		
 		TexturedPanel cp = new TexturedPanel(Game.getImage("background.png"));
 		cp.setLayout(new BorderLayout());
 		cp.add(slPanel, BorderLayout.CENTER);
@@ -101,19 +108,35 @@ public class DakrorLauncher extends JFrame
 		
 		JLabel banner = new JLabel(new ImageIcon(Game.getImage("dakrorTrans.png").getScaledInstance(1000, 250, Image.SCALE_DEFAULT)));
 		
-		loginConfig = new SLConfig(slPanel).gap(0, 0).row(250).row(1f).row(1f).row(1f).row(1f).col(1f).place(0, 0, banner).beginGrid(2, 0).row(1f).row(loginPanel.getHeight()).row(1f).col(1f).col(loginPanel.getWidth()).col(1f).place(1, 1, loginPanel).endGrid();
-		mainConfig = new SLConfig(slPanel).gap(0, 0).row(90).col(1f).place(0, 0, titlePanel).row(1f).place(1, 0, appListPane).row(32).place(2, 0, statusPanel);
-		appConfig = new SLConfig(slPanel).gap(0, 0).row(90).col(1f).place(0, 0, titlePanel).row(1f).place(1, 0, appDetailPanel).row(32).place(2, 0, statusPanel);
+		configs.put(LOGIN, new SLConfig(slPanel).gap(0, 0).row(250).row(1f).row(1f).row(1f).row(1f).col(1f).place(0, 0, banner).beginGrid(2, 0).row(1f).row(loginPanel.getHeight()).row(1f).col(1f).col(loginPanel.getWidth()).col(1f).place(1, 1, loginPanel).endGrid());
+		configs.put(MAIN, new SLConfig(slPanel).gap(0, 0).row(90).col(1f).place(0, 0, titlePanel).row(1f).place(1, 0, appListPane).row(32).place(2, 0, statusPanel));
+		configs.put(APP_DETAIL, new SLConfig(slPanel).gap(0, 0).row(90).col(1f).place(0, 0, titlePanel).row(1f).place(1, 0, appDetailPanel).row(32).place(2, 0, statusPanel));
 		
 		slPanel.setTweenManager(SLAnimator.createTweenManager());
-		slPanel.initialize(loginConfig);
+		slPanel.initialize(configs.get(state));
 	}
 	
 	public void initSL()
 	{
-		login2main = new SLKeyframe(mainConfig, 0.6f).setEndSideForOldCmps(SLSide.LEFT).setDelay(0.2f, appListPane, statusPanel).setDelay(0.5f, titlePanel).setStartSide(SLSide.TOP, titlePanel).setStartSide(SLSide.BOTTOM, appListPane, statusPanel);
-		main2login = new SLKeyframe(loginConfig, 0.6f).setEndSide(SLSide.TOP, titlePanel).setEndSide(SLSide.BOTTOM, appListPane).setDelay(0.2f, loginPanel).setStartSideForNewCmps(SLSide.LEFT);
-		main2app = new SLKeyframe(appConfig, 0.6f).setEndSide(SLSide.TOP, appListPane).setDelay(0.2f, appDetailPanel).setStartSideForNewCmps(SLSide.BOTTOM);
+		frames.put(new UIStateChange(LOGIN, MAIN), new SLKeyframe(configs.get(MAIN), 0.6f).setEndSideForOldCmps(LEFT).setDelay(0.2f, appListPane, statusPanel).setDelay(0.5f, titlePanel).setStartSide(TOP, titlePanel).setStartSide(BOTTOM, appListPane, statusPanel));
+		
+		frames.put(new UIStateChange(MAIN, LOGIN), new SLKeyframe(configs.get(LOGIN), 0.6f).setEndSide(TOP, titlePanel).setEndSide(BOTTOM, appListPane).setDelay(0.2f, loginPanel).setStartSideForNewCmps(LEFT));
+		frames.put(new UIStateChange(MAIN, APP_DETAIL), new SLKeyframe(configs.get(APP_DETAIL), 0.6f).setEndSide(TOP, appListPane).setDelay(0.2f, appDetailPanel).setStartSideForNewCmps(BOTTOM));
+		
+		frames.put(new UIStateChange(APP_DETAIL, MAIN), new SLKeyframe(configs.get(MAIN), 0.6f).setEndSide(BOTTOM, appDetailPanel).setDelay(0.2f, appListPane).setStartSideForNewCmps(TOP));
+		frames.put(new UIStateChange(APP_DETAIL, LOGIN), new SLKeyframe(configs.get(LOGIN), 0.6f).setEndSide(TOP, titlePanel).setEndSide(BOTTOM, appDetailPanel).setDelay(0.2f, loginPanel).setStartSideForNewCmps(LEFT));
+	}
+	
+	public void slideTo(final UIState newState)
+	{
+		slPanel.createTransition().push(frames.get(new UIStateChange(state, newState)).setCallback(new Callback()
+		{
+			@Override
+			public void done()
+			{
+				state = newState;
+			}
+		})).play();
 	}
 	
 	public static void main(String[] args)

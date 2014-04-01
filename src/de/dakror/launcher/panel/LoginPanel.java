@@ -22,6 +22,7 @@ import javax.swing.SwingConstants;
 
 import de.dakror.gamesetup.util.swing.JHintTextField;
 import de.dakror.launcher.DakrorLauncher;
+import de.dakror.launcher.settings.UIStateChange.UIState;
 import de.dakror.launcher.ui.AreaBorder;
 import de.dakror.launcher.util.Assistant;
 
@@ -125,7 +126,7 @@ public class LoginPanel extends JPanel
 			public void actionPerformed(ActionEvent e)
 			{
 				// TODO: actual login blabla
-				DakrorLauncher.slPanel.createTransition().push(DakrorLauncher.currentLauncher.login2main).play();
+				DakrorLauncher.currentLauncher.slideTo(UIState.MAIN);
 			}
 		});
 		

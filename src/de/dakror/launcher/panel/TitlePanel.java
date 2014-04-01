@@ -19,6 +19,7 @@ import javax.swing.border.LineBorder;
 
 import de.dakror.launcher.DakrorLauncher;
 import de.dakror.launcher.Game;
+import de.dakror.launcher.settings.UIStateChange.UIState;
 
 /**
  * @author Dakror
@@ -88,7 +89,7 @@ public class TitlePanel extends JPanel
 			public void actionPerformed(ActionEvent e)
 			{
 				// TODO: actual logout blabla
-				DakrorLauncher.slPanel.createTransition().push(DakrorLauncher.currentLauncher.main2login).play();
+				DakrorLauncher.currentLauncher.slideTo(UIState.LOGIN);
 			}
 		});
 		
