@@ -9,4 +9,11 @@ public enum AppStatus
 	UPDATE,
 	MISSING,
 	NOT_INSTALLED
+	
+	;
+	
+	private String description;
+	
+	private AppStatus()
+	{}
 }
