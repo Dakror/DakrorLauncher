@@ -31,11 +31,9 @@ import javax.swing.JSeparator;
 import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
 
-import de.dakror.launcher.DakrorLauncher;
 import de.dakror.launcher.Game;
 import de.dakror.launcher.app.App;
 import de.dakror.launcher.app.AppStatus;
-import de.dakror.launcher.settings.UIStateChange.UIState;
 import de.dakror.launcher.util.Assistant;
 
 /**
@@ -124,11 +122,14 @@ public class AppPanel extends JPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				DakrorLauncher.currentLauncher.appDetailPanel.setApp(AppPanel.this.app);
-				DakrorLauncher.currentLauncher.slideTo(UIState.APP_DETAIL);
+				if (AppPanel.this.app.getStatus() != AppStatus.OK)
+				{
+					// TODO
+				}
 			}
 		});
 		if (app.getStatus() != AppStatus.NOT_INSTALLED) status.setIcon(new ImageIcon(Game.getImage("status/" + app.getStatus().name().toLowerCase() + ".png").getScaledInstance(99, 99, Image.SCALE_DEFAULT)));
+		status.setToolTipText(app.getStatus().getDescription());
 		status.setContentAreaFilled(false);
 		status.setBorderPainted(false);
 		status.setFocusPainted(false);

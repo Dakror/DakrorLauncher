@@ -5,15 +5,22 @@ package de.dakror.launcher.app;
  */
 public enum AppStatus
 {
-	OK,
-	UPDATE,
-	MISSING,
-	NOT_INSTALLED
+	OK("Auf dem neuesten Stand"),
+	UPDATE("Akualisierungen sind verfügbar"),
+	MISSING("Anwendungsdateien sind fehlerhaft"),
+	NOT_INSTALLED("Noch nicht installiert")
 	
 	;
 	
 	private String description;
 	
-	private AppStatus()
-	{}
+	private AppStatus(String desc)
+	{
+		description = desc;
+	}
+	
+	public String getDescription()
+	{
+		return description;
+	}
 }

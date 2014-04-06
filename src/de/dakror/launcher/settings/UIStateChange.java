@@ -5,8 +5,7 @@ public class UIStateChange
 	public static enum UIState
 	{
 		LOGIN,
-		MAIN,
-		APP_DETAIL
+		MAIN
 	}
 	
 	public UIState from, to;

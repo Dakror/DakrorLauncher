@@ -24,12 +24,12 @@ public class StatusPanel extends JPanel
 		progress.setStringPainted(true);
 		progress.setValue(50);
 		progress.setPreferredSize(new Dimension(500, 22));
+		progress.setVisible(false);
 		add(progress);
 		
 		JLabel info = new JLabel("Info");
 		info.setFont(new Font("SANDBOX", Font.PLAIN, 19));
+		info.setVisible(false);
 		add(info);
-		
 	}
-	
 }
