@@ -18,6 +18,7 @@ import java.awt.event.MouseMotionAdapter;
 import java.awt.geom.Area;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
+import java.io.File;
 
 import javax.swing.AbstractAction;
 import javax.swing.Box;
@@ -34,6 +35,7 @@ import javax.swing.SwingConstants;
 import de.dakror.launcher.Game;
 import de.dakror.launcher.app.App;
 import de.dakror.launcher.app.AppStatus;
+import de.dakror.launcher.settings.CFG;
 import de.dakror.launcher.util.Assistant;
 
 /**
@@ -92,11 +94,11 @@ public class AppPanel extends JPanel
 		desc.setForeground(Color.WHITE);
 		desc.setText(app.getDescription());
 		desc.setEditable(false);
-		desc.setBounds(1, 177, 248, 123);
+		desc.setBounds(1, 155, 248, 145);
 		layeredPane.add(desc);
 		
 		JPanel descBg = new JPanel();
-		descBg.setBounds(1, 177, 248, 123);
+		descBg.setBounds(1, 155, 248, 145);
 		descBg.setBackground(new Color(0, 0, 0, 0.6f));
 		layeredPane.add(descBg);
 		
@@ -159,12 +161,16 @@ public class AppPanel extends JPanel
 			@Override
 			public void run()
 			{
+				AppPanel.this.app.cacheBgFile();
+				
 				BufferedImage bi = new BufferedImage(248, 399, BufferedImage.TYPE_INT_ARGB);
 				Graphics2D g = (Graphics2D) bi.getGraphics();
+				Image img = Game.getImage(new File(CFG.DIR, "cache/" + AppPanel.this.app.getBgFile()).getPath().replace("\\", "/"));
 				
-				Image img = Game.getImage(AppPanel.this.app.getBgFile());
+				int width = img.getWidth(null) / 4 * 3;
+				int height = img.getHeight(null) / 4 * 3;
 				
-				g.drawImage(img, (250 - img.getWidth(null)) / 2, (400 - img.getHeight(null)) / 2, null);
+				g.drawImage(img, (250 - width) / 2, (400 - height) / 2, width, height, null);
 				bg.setIcon(new ImageIcon(bi));
 			}
 		}.start();

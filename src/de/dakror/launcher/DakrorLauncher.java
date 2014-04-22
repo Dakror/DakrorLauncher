@@ -28,7 +28,7 @@ import com.jtattoo.plaf.acryl.AcrylLookAndFeel;
 
 import de.dakror.gamesetup.util.swing.TexturedPanel;
 import de.dakror.launcher.app.App;
-import de.dakror.launcher.app.AppStatus;
+import de.dakror.launcher.app.AppLoader;
 import de.dakror.launcher.panel.AppListPanel;
 import de.dakror.launcher.panel.AppPanel;
 import de.dakror.launcher.panel.LoginPanel;
@@ -74,6 +74,8 @@ public class DakrorLauncher extends JFrame
 		
 		setIconImage(Game.getImage("dakror6.png"));
 		
+		AppLoader.getApps();
+		
 		initComponents();
 		initSL();
 		setVisible(true);
@@ -90,12 +92,8 @@ public class DakrorLauncher extends JFrame
 		
 		AppListPanel alp = new AppListPanel();
 		
-		alp.add(new AppPanel(new App(1, "Village Defense")));
-		alp.add(new AppPanel(new App(1, "Village Defense").setStatus(AppStatus.MISSING)));
-		alp.add(new AppPanel(new App(1, "Village Defense").setStatus(AppStatus.OK)));
-		alp.add(new AppPanel(new App(1, "Village Defense").setStatus(AppStatus.NOT_INSTALLED)));
-		alp.add(new AppPanel(new App(1, "Village Defense")));
-		alp.add(new AppPanel(new App(1, "Village Defense")));
+		for (App app : AppLoader.apps)
+			alp.add(new AppPanel(app));
 		
 		appListPane = new JScrollPane(alp);
 		appListPane.setBorder(BorderFactory.createEmptyBorder());
