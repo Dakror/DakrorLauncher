@@ -32,6 +32,8 @@ import javax.swing.JSeparator;
 import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
 
+import de.dakror.launcher.DownloadManager;
+import de.dakror.launcher.DownloadManager.Download;
 import de.dakror.launcher.Game;
 import de.dakror.launcher.app.App;
 import de.dakror.launcher.app.AppStatus;
@@ -128,7 +130,7 @@ public class AppPanel extends JPanel
 			{
 				if (AppPanel.this.app.getStatus() != AppStatus.OK)
 				{
-					// TODO
+					DownloadManager.manager.addDownload(new Download(AppPanel.this.app.getName(), AppPanel.this.app.getStatus()));
 				}
 			}
 			

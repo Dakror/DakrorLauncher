@@ -75,6 +75,7 @@ public class DakrorLauncher extends JFrame
 		setIconImage(Game.getImage("dakror6.png"));
 		
 		AppLoader.getApps();
+		new DownloadManager();
 		
 		initComponents();
 		initSL();
