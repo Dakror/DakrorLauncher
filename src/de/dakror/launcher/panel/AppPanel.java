@@ -48,6 +48,8 @@ public class AppPanel extends JPanel
 	App app;
 	JLabel bg;
 	
+	boolean statusHovered;
+	
 	public AppPanel(App app)
 	{
 		this.app = app;
@@ -129,8 +131,24 @@ public class AppPanel extends JPanel
 					// TODO
 				}
 			}
-		});
-		if (app.getStatus() != AppStatus.NOT_INSTALLED) status.setIcon(new ImageIcon(Game.getImage("status/" + app.getStatus().name().toLowerCase() + ".png").getScaledInstance(99, 99, Image.SCALE_DEFAULT)));
+			
+		})
+		{
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			public void paint(Graphics g)
+			{
+				
+				if (AppPanel.this.app.getStatus() == AppStatus.NOT_INSTALLED)
+				{
+					if (statusHovered) super.paint(g);
+				}
+				else super.paint(g);
+			}
+		};
+		
+		status.setIcon(new ImageIcon(Game.getImage("status/" + app.getStatus().name().toLowerCase() + ".png").getScaledInstance(99, 99, Image.SCALE_DEFAULT)));
 		status.setToolTipText(app.getStatus().getDescription());
 		status.setContentAreaFilled(false);
 		status.setBorderPainted(false);
@@ -141,6 +159,8 @@ public class AppPanel extends JPanel
 			public void mouseExited(MouseEvent e)
 			{
 				setCursor(Cursor.getDefaultCursor());
+				statusHovered = false;
+				status.repaint();
 			}
 		});
 		status.addMouseMotionListener(new MouseMotionAdapter()
@@ -150,9 +170,12 @@ public class AppPanel extends JPanel
 			{
 				if (p.contains(e.getPoint())) setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 				else setCursor(Cursor.getDefaultCursor());
+				
+				statusHovered = p.contains(e.getPoint());
+				status.repaint();
 			}
 		});
-		status.setVisible(app.getStatus() != AppStatus.NOT_INSTALLED);
+		status.setVisible(true);
 		status.setBounds(150, 300, 99, 99);
 		layeredPane.add(status);
 		
@@ -165,7 +188,7 @@ public class AppPanel extends JPanel
 				
 				BufferedImage bi = new BufferedImage(248, 399, BufferedImage.TYPE_INT_ARGB);
 				Graphics2D g = (Graphics2D) bi.getGraphics();
-				Image img = Game.getImage(new File(CFG.DIR, "cache/" + AppPanel.this.app.getBgFile()).getPath().replace("\\", "/"));
+				Image img = Game.getImage(new File(CFG.DIR, "apps/" + AppPanel.this.app.getName() + "/" + AppPanel.this.app.getBgFile()).getPath().replace("\\", "/"));
 				
 				int width = img.getWidth(null) / 4 * 3;
 				int height = img.getHeight(null) / 4 * 3;

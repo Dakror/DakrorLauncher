@@ -6,9 +6,9 @@ package de.dakror.launcher.app;
 public enum AppStatus
 {
 	OK("Auf dem neuesten Stand"),
-	UPDATE("Akualisierungen sind verfügbar"),
-	MISSING("Anwendungsdateien sind fehlerhaft"),
-	NOT_INSTALLED("Noch nicht installiert")
+	UPDATE("Aktualisieren"),
+	MISSING("Reperatur notwendig!"),
+	NOT_INSTALLED("Installieren")
 	
 	;
 	

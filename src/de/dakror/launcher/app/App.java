@@ -38,8 +38,8 @@ public class App
 	{
 		try
 		{
-			File cache = new File(CFG.DIR, "cache");
-			cache.mkdir();
+			File cache = new File(CFG.DIR, "apps/" + name);
+			cache.mkdirs();
 			
 			File f = new File(cache, bgFile);
 			
