@@ -9,7 +9,6 @@ public class App
 	String name;
 	String desc;
 	String bgFile;
-	String dlName;
 	int id;
 	
 	public App(int id, String name)
@@ -45,11 +44,6 @@ public class App
 	public String getBgFile()
 	{
 		return bgFile;
-	}
-	
-	public String getDlName()
-	{
-		return dlName;
 	}
 	
 	public int getId()
