@@ -2,13 +2,13 @@ package de.dakror.launcher;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 
+import de.dakror.gamesetup.util.Helper;
 import de.dakror.launcher.app.AppStatus;
 import de.dakror.launcher.settings.CFG;
 
@@ -41,6 +41,11 @@ public class DownloadManager extends Thread
 				e.printStackTrace();
 			}
 		}
+		
+		public void downloadVersionFile() throws Exception
+		{
+			Helper.copyInputStream(new URL("http://dakror.de/bin/" + name.replace(" ", "-") + ".version").openStream(), new FileOutputStream(new File(CFG.DIR, "apps/" + name.replace(" ", "-") + "/" + name.replace(" ", "-") + ".version")));
+		}
 	}
 	
 	public static DownloadManager manager;
@@ -65,15 +70,17 @@ public class DownloadManager extends Thread
 		{
 			if (queue.size() > 0)
 			{
-				DakrorLauncher.currentLauncher.statusPanel.setComponentsVisible(true);
-				downloaded = 0;
-				Download d = queue.get(0);
-				
-				DakrorLauncher.currentLauncher.statusPanel.progress.setValue(0);
-				DakrorLauncher.currentLauncher.statusPanel.info.setText(d.status.getName() + ": " + d.name);
-				
 				try
 				{
+					DakrorLauncher.currentLauncher.statusPanel.setComponentsVisible(true);
+					downloaded = 0;
+					Download d = queue.get(0);
+					
+					d.downloadVersionFile();
+					
+					DakrorLauncher.currentLauncher.statusPanel.progress.setValue(0);
+					DakrorLauncher.currentLauncher.statusPanel.info.setText(d.status.getName() + ": " + d.name + "     (" + Helper.formatBinarySize(d.size, 2) + ")");
+					
 					InputStream in = d.url.openStream();
 					OutputStream out = new FileOutputStream(d.dest);
 					byte[] buffer = new byte[1024];
@@ -95,15 +102,25 @@ public class DownloadManager extends Thread
 					}
 					in.close();
 					out.close();
+					
+					downloadFinished();
+					
+					if (queue.size() == 0) DakrorLauncher.currentLauncher.statusPanel.setComponentsVisible(false);
 				}
-				catch (IOException e)
+				catch (Exception e)
 				{
 					e.printStackTrace();
 				}
-				
-				downloadFinished();
 			}
-			else DakrorLauncher.currentLauncher.statusPanel.setComponentsVisible(false);
+			
+			try
+			{
+				Thread.sleep(16);
+			}
+			catch (InterruptedException e)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 	

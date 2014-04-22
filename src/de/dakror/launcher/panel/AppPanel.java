@@ -19,6 +19,7 @@ import java.awt.geom.Area;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 
 import javax.swing.AbstractAction;
 import javax.swing.Box;
@@ -56,6 +57,25 @@ public class AppPanel extends JPanel
 	{
 		this.app = app;
 		
+		MouseAdapter launch = new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent e)
+			{
+				if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() == 2)
+				{
+					try
+					{
+						Runtime.getRuntime().exec(new String[] { "java" + (System.getProperty("os.name").toLowerCase().contains("win") ? "w" : ""), "-jar", new File(CFG.DIR, "apps/" + AppPanel.this.app.getName().replace(" ", "-") + "/" + AppPanel.this.app.getName().replace(" ", "-") + ".jar").getPath().replace("\\", "/") });
+					}
+					catch (IOException e1)
+					{
+						e1.printStackTrace();
+					}
+				}
+			}
+		};
+		
 		final Polygon p = new Polygon();
 		p.addPoint(0, 99);
 		p.addPoint(99, 99);
@@ -64,9 +84,11 @@ public class AppPanel extends JPanel
 		setPreferredSize(new Dimension(250, 400));
 		setOpaque(false);
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		if (app.getStatus() == AppStatus.OK) addMouseListener(launch);
 		
 		JLayeredPane layeredPane = new JLayeredPane();
 		layeredPane.setPreferredSize(new Dimension(0, 1000));
+		
 		add(layeredPane);
 		
 		JPanel title = new JPanel();
@@ -199,6 +221,15 @@ public class AppPanel extends JPanel
 				bg.setIcon(new ImageIcon(bi));
 			}
 		}.start();
+		
+		if (app.getStatus() == AppStatus.OK)
+		{
+			for (Component c : getComponents())
+			{
+				c.addMouseListener(launch);
+				c.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			}
+		}
 	}
 	
 	@Override

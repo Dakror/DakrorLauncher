@@ -26,19 +26,28 @@ public class App
 		this.bgFile = bgFile;
 		this.desc = desc;
 		this.onlineVersion = onlineVersion;
-		status = AppStatus.NOT_INSTALLED;
+		
+		updateStatus();
 	}
 	
 	public void updateStatus()
-	{	
-		
+	{
+		File dir = new File(CFG.DIR, "apps/" + name.replace(" ", "-"));
+		File version = new File(dir, name.replace(" ", "-") + ".version");
+		if (!dir.exists()) status = AppStatus.NOT_INSTALLED;
+		else
+		{
+			long v = Long.parseLong(Helper.getFileContent(version).trim());
+			if (v < onlineVersion) status = AppStatus.UPDATE;
+			else status = AppStatus.OK;
+		}
 	}
 	
 	public void cacheBgFile()
 	{
 		try
 		{
-			File cache = new File(CFG.DIR, "apps/" + name);
+			File cache = new File(CFG.DIR, "apps/" + name.replace(" ", "-"));
 			cache.mkdirs();
 			
 			File f = new File(cache, bgFile);

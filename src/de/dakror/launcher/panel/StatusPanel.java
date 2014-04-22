@@ -32,7 +32,7 @@ public class StatusPanel extends JPanel
 		add(progress);
 		
 		info = new JLabel("");
-		info.setFont(new Font("SANDBOX", Font.PLAIN, 19));
+		info.setFont(new Font("SANDBOX", Font.PLAIN, 16));
 		info.setVisible(false);
 		add(info);
 	}
