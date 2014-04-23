@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import de.dakror.gamesetup.util.Helper;
 import de.dakror.launcher.app.App;
+import de.dakror.launcher.app.AppStatus;
 import de.dakror.launcher.panel.AppPanel;
 import de.dakror.launcher.settings.CFG;
 
@@ -25,15 +26,17 @@ public class DownloadManager extends Thread
 		public File dest;
 		public long size;
 		public App app;
+		public AppStatus status;
 		
 		public Download(App app)
 		{
 			try
 			{
 				this.app = app;
+				status = AppStatus.valueOf(app.getStatus().name());
 				String escName = app.getName().replace(" ", "-");
 				url = new URL("http://dakror.de/bin/" + escName + ".jar");
-				dest = new File(CFG.DIR, "apps/" + escName + "/" + escName + ".jar");
+				dest = new File(CFG.DIR, DakrorLauncher.userId + "/apps/" + escName + "/" + escName + ".jar");
 				URLConnection con = url.openConnection();
 				size = con.getContentLengthLong();
 			}
@@ -46,7 +49,7 @@ public class DownloadManager extends Thread
 		public void downloadVersionFile() throws Exception
 		{
 			String escName = app.getName().replace(" ", "-");
-			Helper.copyInputStream(new URL("http://dakror.de/bin/" + escName + ".version").openStream(), new FileOutputStream(new File(CFG.DIR, "apps/" + escName + "/" + escName + ".version")));
+			Helper.copyInputStream(new URL("http://dakror.de/bin/" + escName + ".version").openStream(), new FileOutputStream(new File(CFG.DIR, DakrorLauncher.userId + "/apps/" + escName + "/" + escName + ".version")));
 		}
 	}
 	
@@ -81,7 +84,7 @@ public class DownloadManager extends Thread
 					d.downloadVersionFile();
 					
 					DakrorLauncher.currentLauncher.statusPanel.progress.setValue(0);
-					DakrorLauncher.currentLauncher.statusPanel.info.setText(d.app.getStatus().getName() + ": " + d.app.getName() + "     (" + Helper.formatBinarySize(d.size, 2) + ")");
+					updateTitle(d);
 					
 					InputStream in = d.url.openStream();
 					OutputStream out = new FileOutputStream(d.dest);
@@ -89,6 +92,7 @@ public class DownloadManager extends Thread
 					int len = in.read(buffer);
 					while (len >= 0)
 					{
+						updateTitle(d);
 						if (cancel)
 						{
 							cancel = false;
@@ -127,6 +131,11 @@ public class DownloadManager extends Thread
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public void updateTitle(Download d)
+	{
+		DakrorLauncher.currentLauncher.statusPanel.info.setText(d.status.getName() + ": " + d.app.getName() + " (" + Helper.formatBinarySize(d.size, 2) + ")" + (queue.size() > 1 ? " und " + (queue.size() - 1) + " weitere." : ""));
 	}
 	
 	public int getProgress()

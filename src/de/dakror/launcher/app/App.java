@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.net.URL;
 
 import de.dakror.gamesetup.util.Helper;
+import de.dakror.launcher.DakrorLauncher;
 import de.dakror.launcher.settings.CFG;
 
 /**
@@ -32,7 +33,7 @@ public class App
 	
 	public void updateStatus()
 	{
-		File dir = new File(CFG.DIR, "apps/" + name.replace(" ", "-"));
+		File dir = new File(CFG.DIR, DakrorLauncher.userId + "/apps/" + name.replace(" ", "-"));
 		File version = new File(dir, name.replace(" ", "-") + ".version");
 		if (!dir.exists()) status = AppStatus.NOT_INSTALLED;
 		else
@@ -54,7 +55,7 @@ public class App
 	{
 		try
 		{
-			File cache = new File(CFG.DIR, "apps/" + name.replace(" ", "-"));
+			File cache = new File(CFG.DIR, DakrorLauncher.userId + "/apps/" + name.replace(" ", "-"));
 			cache.mkdirs();
 			
 			File f = new File(cache, bgFile);

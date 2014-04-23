@@ -28,6 +28,8 @@ import com.sun.org.apache.xerces.internal.impl.dv.util.HexBin;
 import de.dakror.gamesetup.util.Helper;
 import de.dakror.gamesetup.util.swing.JHintTextField;
 import de.dakror.launcher.DakrorLauncher;
+import de.dakror.launcher.app.App;
+import de.dakror.launcher.app.AppLoader;
 import de.dakror.launcher.settings.UIStateChange.UIState;
 import de.dakror.launcher.ui.AreaBorder;
 import de.dakror.launcher.util.Assistant;
@@ -145,6 +147,12 @@ public class LoginPanel extends JPanel
 						pwd.setText("");
 						usr.setText("");
 						login.setEnabled(false);
+						
+						for (App app : AppLoader.apps)
+							app.updateStatus();
+						for (Component c : DakrorLauncher.currentLauncher.alp.getComponents())
+							if (c instanceof AppPanel) ((AppPanel) c).onLogin();
+						
 						DakrorLauncher.currentLauncher.titlePanel.loadLogo();
 						DakrorLauncher.currentLauncher.slideTo(UIState.MAIN);
 					}

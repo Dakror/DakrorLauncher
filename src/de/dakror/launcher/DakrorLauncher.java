@@ -56,7 +56,7 @@ public class DakrorLauncher extends JFrame
 	LoginPanel loginPanel = new LoginPanel();
 	StatusPanel statusPanel = new StatusPanel();
 	
-	AppListPanel alp;
+	public AppListPanel alp;
 	
 	public JScrollPane appListPane;
 	

@@ -7,7 +7,8 @@ public enum AppStatus
 {
 	OK("", "Auf dem neuesten Stand"),
 	UPDATE("Aktualisierung", "Aktualisieren"),
-	NOT_INSTALLED("Installation", "Installieren")
+	NOT_INSTALLED("Installation", "Installieren"),
+	DOWNLOADING("Lade herunter", "Lade herunter"),
 	
 	;
 	

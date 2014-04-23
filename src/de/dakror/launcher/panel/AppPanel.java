@@ -33,6 +33,7 @@ import javax.swing.JSeparator;
 import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
 
+import de.dakror.launcher.DakrorLauncher;
 import de.dakror.launcher.DownloadManager;
 import de.dakror.launcher.DownloadManager.Download;
 import de.dakror.launcher.Game;
@@ -67,7 +68,7 @@ public class AppPanel extends JPanel
 				{
 					try
 					{
-						Runtime.getRuntime().exec(new String[] { "java" + (System.getProperty("os.name").toLowerCase().contains("win") ? "w" : ""), "-jar", new File(CFG.DIR, "apps/" + AppPanel.this.app.getName().replace(" ", "-") + "/" + AppPanel.this.app.getName().replace(" ", "-") + ".jar").getPath().replace("\\", "/") });
+						Runtime.getRuntime().exec(new String[] { "java" + (System.getProperty("os.name").toLowerCase().contains("win") ? "w" : ""), "-jar", new File(CFG.DIR, DakrorLauncher.userId + "/apps/" + AppPanel.this.app.getName().replace(" ", "-") + "/" + AppPanel.this.app.getName().replace(" ", "-") + ".jar").getPath().replace("\\", "/") });
 					}
 					catch (IOException e1)
 					{
@@ -117,7 +118,7 @@ public class AppPanel extends JPanel
 		final JTextPane desc = new JTextPane();
 		desc.setOpaque(false);
 		desc.setHighlighter(null);
-		desc.setFont(new Font("SANDBOX", Font.ITALIC, 12));
+		desc.setFont(new Font("SANDBOX", Font.BOLD, 13));
 		desc.setForeground(Color.WHITE);
 		desc.setText(app.getDescription());
 		desc.setEditable(false);
@@ -140,7 +141,7 @@ public class AppPanel extends JPanel
 				super.paint(g);
 			}
 		};
-		bg.setIcon(new ImageIcon(new BufferedImage(248, 399, BufferedImage.TYPE_INT_RGB)));
+		bg.setBackground(new Color(0, 0, 0, 0.6f));
 		bg.setBounds(1, 1, 248, 399);
 		layeredPane.add(bg);
 		
@@ -151,9 +152,10 @@ public class AppPanel extends JPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				if (AppPanel.this.app.getStatus() != AppStatus.OK)
+				if (AppPanel.this.app.getStatus() != AppStatus.OK && AppPanel.this.app.getStatus() != AppStatus.DOWNLOADING)
 				{
 					DownloadManager.manager.addDownload(new Download(AppPanel.this.app));
+					AppPanel.this.app.setStatus(AppStatus.DOWNLOADING);
 				}
 			}
 			
@@ -204,16 +206,28 @@ public class AppPanel extends JPanel
 		status.setBounds(150, 300, 99, 99);
 		layeredPane.add(status);
 		
+		if (app.getStatus() == AppStatus.OK)
+		{
+			for (Component c : layeredPane.getComponents())
+			{
+				c.addMouseListener(launch);
+				c.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			}
+		}
+	}
+	
+	public void onLogin()
+	{
 		new Thread()
 		{
 			@Override
 			public void run()
 			{
-				AppPanel.this.app.cacheBgFile();
+				app.cacheBgFile();
 				
 				BufferedImage bi = new BufferedImage(248, 399, BufferedImage.TYPE_INT_ARGB);
 				Graphics2D g = (Graphics2D) bi.getGraphics();
-				Image img = Game.getImage(new File(CFG.DIR, "apps/" + AppPanel.this.app.getName() + "/" + AppPanel.this.app.getBgFile()).getPath().replace("\\", "/"));
+				Image img = Game.getImage(new File(CFG.DIR, DakrorLauncher.userId + "/apps/" + app.getName() + "/" + app.getBgFile()).getPath().replace("\\", "/"));
 				
 				int width = img.getWidth(null) / 4 * 3;
 				int height = img.getHeight(null) / 4 * 3;
@@ -223,14 +237,7 @@ public class AppPanel extends JPanel
 			}
 		}.start();
 		
-		if (app.getStatus() == AppStatus.OK)
-		{
-			for (Component c : layeredPane.getComponents())
-			{
-				c.addMouseListener(launch);
-				c.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-			}
-		}
+		updateStatus();
 	}
 	
 	public void updateStatus()
