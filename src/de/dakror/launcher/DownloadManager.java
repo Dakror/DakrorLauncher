@@ -1,5 +1,6 @@
 package de.dakror.launcher;
 
+import java.awt.Component;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -9,7 +10,8 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 
 import de.dakror.gamesetup.util.Helper;
-import de.dakror.launcher.app.AppStatus;
+import de.dakror.launcher.app.App;
+import de.dakror.launcher.panel.AppPanel;
 import de.dakror.launcher.settings.CFG;
 
 /**
@@ -22,17 +24,16 @@ public class DownloadManager extends Thread
 		public URL url;
 		public File dest;
 		public long size;
-		public String name;
-		public AppStatus status;
+		public App app;
 		
-		public Download(String app, AppStatus status)
+		public Download(App app)
 		{
 			try
 			{
-				name = app;
-				url = new URL("http://dakror.de/bin/" + app.replace(" ", "-") + ".jar");
-				dest = new File(CFG.DIR, "apps/" + app.replace(" ", "-") + "/" + name.replace(" ", "-") + ".jar");
-				this.status = status;
+				this.app = app;
+				String escName = app.getName().replace(" ", "-");
+				url = new URL("http://dakror.de/bin/" + escName + ".jar");
+				dest = new File(CFG.DIR, "apps/" + escName + "/" + escName + ".jar");
 				URLConnection con = url.openConnection();
 				size = con.getContentLengthLong();
 			}
@@ -44,7 +45,8 @@ public class DownloadManager extends Thread
 		
 		public void downloadVersionFile() throws Exception
 		{
-			Helper.copyInputStream(new URL("http://dakror.de/bin/" + name.replace(" ", "-") + ".version").openStream(), new FileOutputStream(new File(CFG.DIR, "apps/" + name.replace(" ", "-") + "/" + name.replace(" ", "-") + ".version")));
+			String escName = app.getName().replace(" ", "-");
+			Helper.copyInputStream(new URL("http://dakror.de/bin/" + escName + ".version").openStream(), new FileOutputStream(new File(CFG.DIR, "apps/" + escName + "/" + escName + ".version")));
 		}
 	}
 	
@@ -79,7 +81,7 @@ public class DownloadManager extends Thread
 					d.downloadVersionFile();
 					
 					DakrorLauncher.currentLauncher.statusPanel.progress.setValue(0);
-					DakrorLauncher.currentLauncher.statusPanel.info.setText(d.status.getName() + ": " + d.name + "     (" + Helper.formatBinarySize(d.size, 2) + ")");
+					DakrorLauncher.currentLauncher.statusPanel.info.setText(d.app.getStatus().getName() + ": " + d.app.getName() + "     (" + Helper.formatBinarySize(d.size, 2) + ")");
 					
 					InputStream in = d.url.openStream();
 					OutputStream out = new FileOutputStream(d.dest);
@@ -102,6 +104,9 @@ public class DownloadManager extends Thread
 					}
 					in.close();
 					out.close();
+					
+					for (Component c : DakrorLauncher.currentLauncher.alp.getComponents())
+						if (c instanceof AppPanel && ((AppPanel) c).app.getId() == d.app.getId()) ((AppPanel) c).updateStatus();
 					
 					downloadFinished();
 					

@@ -37,9 +37,16 @@ public class App
 		if (!dir.exists()) status = AppStatus.NOT_INSTALLED;
 		else
 		{
-			long v = Long.parseLong(Helper.getFileContent(version).trim());
-			if (v < onlineVersion) status = AppStatus.UPDATE;
-			else status = AppStatus.OK;
+			try
+			{
+				long v = Long.parseLong(Helper.getFileContent(version).trim());
+				if (v < onlineVersion) status = AppStatus.UPDATE;
+				else status = AppStatus.OK;
+			}
+			catch (Exception e)
+			{
+				status = AppStatus.NOT_INSTALLED;
+			}
 		}
 	}
 	

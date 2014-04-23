@@ -48,9 +48,14 @@ public class DakrorLauncher extends JFrame
 	public static DakrorLauncher currentLauncher;
 	public static SLPanel slPanel = new SLPanel();
 	
+	public static int userId;
+	public static String username;
+	
 	LoginPanel loginPanel = new LoginPanel();
 	TitlePanel titlePanel = new TitlePanel();
 	StatusPanel statusPanel = new StatusPanel();
+	
+	AppListPanel alp;
 	
 	public JScrollPane appListPane;
 	
@@ -70,7 +75,6 @@ public class DakrorLauncher extends JFrame
 		setLocationRelativeTo(null);
 		setUndecorated(true);
 		setShape(Assistant.getClipArea(0, 0, getWidth(), getHeight()));
-		setFont(new Font("SANDBOX", Font.PLAIN, 17));
 		
 		setIconImage(Game.getImage("dakror6.png"));
 		
@@ -91,7 +95,7 @@ public class DakrorLauncher extends JFrame
 		cp.setLayout(new BorderLayout());
 		cp.add(slPanel, BorderLayout.CENTER);
 		
-		AppListPanel alp = new AppListPanel();
+		alp = new AppListPanel();
 		
 		for (App app : AppLoader.apps)
 			alp.add(new AppPanel(app));
@@ -129,6 +133,12 @@ public class DakrorLauncher extends JFrame
 				state = newState;
 			}
 		})).play();
+	}
+	
+	public static void setUsername(String s)
+	{
+		username = s;
+		currentLauncher.titlePanel.userName.setText(s);
 	}
 	
 	public static void main(String[] args)

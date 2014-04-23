@@ -9,17 +9,23 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.net.URL;
+import java.security.MessageDigest;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
+import com.sun.org.apache.xerces.internal.impl.dv.util.HexBin;
+
+import de.dakror.gamesetup.util.Helper;
 import de.dakror.gamesetup.util.swing.JHintTextField;
 import de.dakror.launcher.DakrorLauncher;
 import de.dakror.launcher.settings.UIStateChange.UIState;
@@ -125,8 +131,29 @@ public class LoginPanel extends JPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				// TODO: actual login blabla
-				DakrorLauncher.currentLauncher.slideTo(UIState.MAIN);
+				try
+				{
+					String pw = new String(HexBin.encode(MessageDigest.getInstance("MD5").digest(new String(pwd.getPassword()).getBytes()))).toLowerCase();
+					String s = Helper.getURLContent(new URL("http://dakror.de/mp-api/login_noip.php?username=" + usr.getText() + "&password=" + pw)).trim();
+					
+					if (s.contains("true"))
+					{
+						String[] p = s.split(":");
+						DakrorLauncher.userId = Integer.parseInt(p[1]);
+						DakrorLauncher.setUsername(p[2]);
+						DakrorLauncher.currentLauncher.slideTo(UIState.MAIN);
+					}
+					else
+					{
+						pwd.setText("");
+						JOptionPane.showMessageDialog(DakrorLauncher.currentLauncher, "Login inkorrekt!", "Login inkorrekt!", JOptionPane.ERROR_MESSAGE);
+					}
+				}
+				catch (Exception e1)
+				{
+					e1.printStackTrace();
+				}
+				
 			}
 		});
 		

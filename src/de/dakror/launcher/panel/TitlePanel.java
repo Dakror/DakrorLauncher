@@ -27,6 +27,7 @@ import de.dakror.launcher.settings.UIStateChange.UIState;
 public class TitlePanel extends JPanel
 {
 	private static final long serialVersionUID = 1L;
+	public JLabel userName;
 	
 	public TitlePanel()
 	{
@@ -39,7 +40,7 @@ public class TitlePanel extends JPanel
 		Box verticalBox = Box.createVerticalBox();
 		horizontalBox.add(verticalBox);
 		
-		JLabel userName = new JLabel("Username");
+		userName = new JLabel(DakrorLauncher.username);
 		userName.setFont(new Font("SANDBOX", Font.PLAIN, 22));
 		verticalBox.add(userName);
 		userName.setVerticalTextPosition(SwingConstants.TOP);
@@ -88,7 +89,8 @@ public class TitlePanel extends JPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				// TODO: actual logout blabla
+				DakrorLauncher.userId = 0;
+				DakrorLauncher.setUsername(null);
 				DakrorLauncher.currentLauncher.slideTo(UIState.LOGIN);
 			}
 		});

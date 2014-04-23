@@ -48,8 +48,9 @@ public class AppPanel extends JPanel
 {
 	private static final long serialVersionUID = 1L;
 	
-	App app;
+	public App app;
 	JLabel bg;
+	JButton status;
 	
 	boolean statusHovered;
 	
@@ -143,7 +144,7 @@ public class AppPanel extends JPanel
 		bg.setBounds(1, 1, 248, 399);
 		layeredPane.add(bg);
 		
-		final JButton status = new JButton(new AbstractAction()
+		status = new JButton(new AbstractAction()
 		{
 			private static final long serialVersionUID = 1L;
 			
@@ -152,7 +153,7 @@ public class AppPanel extends JPanel
 			{
 				if (AppPanel.this.app.getStatus() != AppStatus.OK)
 				{
-					DownloadManager.manager.addDownload(new Download(AppPanel.this.app.getName(), AppPanel.this.app.getStatus()));
+					DownloadManager.manager.addDownload(new Download(AppPanel.this.app));
 				}
 			}
 			
@@ -224,12 +225,21 @@ public class AppPanel extends JPanel
 		
 		if (app.getStatus() == AppStatus.OK)
 		{
-			for (Component c : getComponents())
+			for (Component c : layeredPane.getComponents())
 			{
 				c.addMouseListener(launch);
 				c.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 			}
 		}
+	}
+	
+	public void updateStatus()
+	{
+		app.updateStatus();
+		status.setIcon(new ImageIcon(Game.getImage("status/" + app.getStatus().name().toLowerCase() + ".png").getScaledInstance(99, 99, Image.SCALE_DEFAULT)));
+		status.setToolTipText(app.getStatus().getDescription());
+		
+		repaint();
 	}
 	
 	@Override
