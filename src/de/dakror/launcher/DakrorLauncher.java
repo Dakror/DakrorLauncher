@@ -50,9 +50,10 @@ public class DakrorLauncher extends JFrame
 	
 	public static int userId;
 	public static String username;
+	public static String pwdMd5;
+	public TitlePanel titlePanel = new TitlePanel();
 	
 	LoginPanel loginPanel = new LoginPanel();
-	TitlePanel titlePanel = new TitlePanel();
 	StatusPanel statusPanel = new StatusPanel();
 	
 	AppListPanel alp;

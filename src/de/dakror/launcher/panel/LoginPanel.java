@@ -141,11 +141,17 @@ public class LoginPanel extends JPanel
 						String[] p = s.split(":");
 						DakrorLauncher.userId = Integer.parseInt(p[1]);
 						DakrorLauncher.setUsername(p[2]);
+						DakrorLauncher.pwdMd5 = pw;
+						pwd.setText("");
+						usr.setText("");
+						login.setEnabled(false);
+						DakrorLauncher.currentLauncher.titlePanel.loadLogo();
 						DakrorLauncher.currentLauncher.slideTo(UIState.MAIN);
 					}
 					else
 					{
 						pwd.setText("");
+						login.setEnabled(false);
 						JOptionPane.showMessageDialog(DakrorLauncher.currentLauncher, "Login inkorrekt!", "Login inkorrekt!", JOptionPane.ERROR_MESSAGE);
 					}
 				}
