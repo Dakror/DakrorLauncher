@@ -69,7 +69,11 @@ public class TitlePanel extends JPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				String link = JOptionPane.showInputDialog(DakrorLauncher.currentLauncher, "Bitte gib den Link zum gewünschten Bild an.", "Profilbild ändern", JOptionPane.QUESTION_MESSAGE).trim();
+				String link = JOptionPane.showInputDialog(DakrorLauncher.currentLauncher, "Bitte gib den Link zum gewünschten Bild an.", "Profilbild ändern", JOptionPane.QUESTION_MESSAGE);
+				if (link == null) return;
+				
+				link = link.trim();
+				
 				if (!link.startsWith("http")) JOptionPane.showMessageDialog(DakrorLauncher.currentLauncher, "Dies ist kein gültiger Link!", "Ungültiger Link!", JOptionPane.ERROR_MESSAGE);
 				else
 				{
