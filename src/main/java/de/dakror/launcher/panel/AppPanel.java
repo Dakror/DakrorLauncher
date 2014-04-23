@@ -55,28 +55,30 @@ public class AppPanel extends JPanel
 	
 	boolean statusHovered;
 	
+	MouseAdapter launch = new MouseAdapter()
+	{
+		@Override
+		public void mousePressed(MouseEvent e)
+		{
+			if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() == 2)
+			{
+				try
+				{
+					Runtime.getRuntime().exec(new String[] { "java" + (System.getProperty("os.name").toLowerCase().contains("win") ? "w" : ""), "-jar", new File(CFG.DIR, DakrorLauncher.userId + "/apps/" + app.getName().replace(" ", "-") + "/" + app.getName().replace(" ", "-") + ".jar").getPath().replace("\\", "/"), "-un=" + DakrorLauncher.username, "-upwd=" + DakrorLauncher.pwdMd5 });
+				}
+				catch (IOException e1)
+				{
+					e1.printStackTrace();
+				}
+			}
+		}
+	};
+	
+	JLayeredPane layeredPane;
+	
 	public AppPanel(App app)
 	{
 		this.app = app;
-		
-		MouseAdapter launch = new MouseAdapter()
-		{
-			@Override
-			public void mousePressed(MouseEvent e)
-			{
-				if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() == 2)
-				{
-					try
-					{
-						Runtime.getRuntime().exec(new String[] { "java" + (System.getProperty("os.name").toLowerCase().contains("win") ? "w" : ""), "-jar", new File(CFG.DIR, DakrorLauncher.userId + "/apps/" + AppPanel.this.app.getName().replace(" ", "-") + "/" + AppPanel.this.app.getName().replace(" ", "-") + ".jar").getPath().replace("\\", "/"), "-un=" + DakrorLauncher.username, "-upwd=" + DakrorLauncher.pwdMd5 });
-					}
-					catch (IOException e1)
-					{
-						e1.printStackTrace();
-					}
-				}
-			}
-		};
 		
 		final Polygon p = new Polygon();
 		p.addPoint(0, 99);
@@ -88,7 +90,7 @@ public class AppPanel extends JPanel
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		if (app.getStatus() == AppStatus.OK) addMouseListener(launch);
 		
-		JLayeredPane layeredPane = new JLayeredPane();
+		layeredPane = new JLayeredPane();
 		layeredPane.setPreferredSize(new Dimension(0, 1000));
 		
 		add(layeredPane);
@@ -245,6 +247,23 @@ public class AppPanel extends JPanel
 		app.updateStatus();
 		status.setIcon(new ImageIcon(Game.getImage("status/" + app.getStatus().name().toLowerCase() + ".png").getScaledInstance(99, 99, Image.SCALE_DEFAULT)));
 		status.setToolTipText(app.getStatus().getDescription());
+		
+		if (app.getStatus() == AppStatus.OK)
+		{
+			for (Component c : layeredPane.getComponents())
+			{
+				c.addMouseListener(launch);
+				c.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			}
+		}
+		else
+		{
+			for (Component c : layeredPane.getComponents())
+			{
+				c.removeMouseListener(launch);
+				c.setCursor(Cursor.getDefaultCursor());
+			}
+		}
 		
 		repaint();
 	}
