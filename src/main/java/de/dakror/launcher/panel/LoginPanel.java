@@ -64,6 +64,7 @@ public class LoginPanel extends JPanel
 		verticalBox.add(verticalStrut_3);
 		
 		final JHintTextField usr = new JHintTextField("Benutzername");
+		usr.setText(DakrorLauncher.getLastLogin());
 		verticalBox.add(usr);
 		usr.setBorder(BorderFactory.createLineBorder(Color.gray));
 		usr.foreGround = Color.white;
@@ -144,8 +145,9 @@ public class LoginPanel extends JPanel
 						DakrorLauncher.userId = Integer.parseInt(p[1]);
 						DakrorLauncher.setUsername(p[2]);
 						DakrorLauncher.pwdMd5 = pw;
+						DakrorLauncher.setLastLogin();
 						pwd.setText("");
-						usr.setText("");
+						usr.setText(DakrorLauncher.getLastLogin());
 						login.setEnabled(false);
 						
 						for (App app : AppLoader.apps)

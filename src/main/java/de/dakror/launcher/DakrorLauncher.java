@@ -7,6 +7,8 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Properties;
 
@@ -26,6 +28,7 @@ import aurelienribon.slidinglayout.SLPanel;
 
 import com.jtattoo.plaf.acryl.AcrylLookAndFeel;
 
+import de.dakror.gamesetup.util.Helper;
 import de.dakror.gamesetup.util.swing.TexturedPanel;
 import de.dakror.launcher.app.App;
 import de.dakror.launcher.app.AppLoader;
@@ -34,6 +37,7 @@ import de.dakror.launcher.panel.AppPanel;
 import de.dakror.launcher.panel.LoginPanel;
 import de.dakror.launcher.panel.StatusPanel;
 import de.dakror.launcher.panel.TitlePanel;
+import de.dakror.launcher.settings.CFG;
 import de.dakror.launcher.settings.UIStateChange;
 import de.dakror.launcher.settings.UIStateChange.UIState;
 import de.dakror.launcher.util.Assistant;
@@ -85,7 +89,27 @@ public class DakrorLauncher extends JFrame
 		initComponents();
 		initSL();
 		setVisible(true);
-		
+	}
+	
+	public static String getLastLogin()
+	{
+		File f = new File(CFG.DIR, "lastlogin");
+		if (f.exists()) return Helper.getFileContent(f).trim();
+		return "";
+	}
+	
+	public static void setLastLogin()
+	{
+		try
+		{
+			File f = new File(CFG.DIR, "lastlogin");
+			f.createNewFile();
+			Helper.setFileContent(f, username);
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	public void initComponents()
