@@ -26,6 +26,7 @@ import aurelienribon.slidinglayout.SLPanel;
 
 import com.jtattoo.plaf.acryl.AcrylLookAndFeel;
 
+import de.dakror.dakrorbin.DakrorBin;
 import de.dakror.gamesetup.util.Helper;
 import de.dakror.gamesetup.util.swing.TexturedPanel;
 import de.dakror.launcher.app.App;
@@ -87,6 +88,15 @@ public class DakrorLauncher extends JFrame
 		initComponents();
 		initSL();
 		setVisible(true);
+		DakrorBin.init(this, "DakrorLauncher");
+		try
+		{
+			DakrorBin.checkForUpdates();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	public static String getLastLogin()
