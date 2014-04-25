@@ -4,8 +4,6 @@ import static aurelienribon.slidinglayout.SLSide.*;
 import static de.dakror.launcher.settings.UIStateChange.UIState.*;
 
 import java.awt.BorderLayout;
-import java.awt.Font;
-import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
@@ -178,7 +176,6 @@ public class DakrorLauncher extends JFrame
 		{
 			ToolTipManager.sharedInstance().setInitialDelay(0);
 			UIManager.setLookAndFeel(new AcrylLookAndFeel());
-			GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(Font.createFont(Font.TRUETYPE_FONT, DakrorLauncher.class.getResourceAsStream("/SANDBOXB.ttf")));
 		}
 		catch (Exception e)
 		{

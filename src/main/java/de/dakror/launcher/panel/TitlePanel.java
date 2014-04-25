@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -49,7 +48,7 @@ public class TitlePanel extends JPanel
 		horizontalBox.add(verticalBox);
 		
 		userName = new JLabel(DakrorLauncher.username);
-		userName.setFont(new Font("SANDBOX", Font.PLAIN, 22));
+		userName.setFont(userName.getFont().deriveFont(22f));
 		verticalBox.add(userName);
 		userName.setVerticalTextPosition(SwingConstants.TOP);
 		userName.setVerticalAlignment(SwingConstants.TOP);

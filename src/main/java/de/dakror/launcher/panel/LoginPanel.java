@@ -3,7 +3,6 @@ package de.dakror.launcher.panel;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -58,7 +57,7 @@ public class LoginPanel extends JPanel
 		verticalBox.add(l);
 		l.setAlignmentX(Component.CENTER_ALIGNMENT);
 		l.setForeground(Color.white);
-		l.setFont(new Font("SANDBOX", Font.PLAIN, 30));
+		l.setFont(l.getFont().deriveFont(30f));
 		
 		Component verticalStrut_3 = Box.createVerticalStrut(20);
 		verticalBox.add(verticalStrut_3);
@@ -68,7 +67,7 @@ public class LoginPanel extends JPanel
 		verticalBox.add(usr);
 		usr.setBorder(BorderFactory.createLineBorder(Color.gray));
 		usr.foreGround = Color.white;
-		usr.setFont(new Font("SANDBOX", Font.PLAIN, 22));
+		usr.setFont(usr.getFont().deriveFont(22f));
 		usr.setColumns(20);
 		usr.setBackground(Color.black);
 		usr.setCaretColor(Color.white);
@@ -80,7 +79,7 @@ public class LoginPanel extends JPanel
 		verticalBox.add(pwd);
 		pwd.setBorder(BorderFactory.createLineBorder(Color.gray));
 		pwd.setColumns(20);
-		pwd.setFont(new Font("SANDBOX", Font.PLAIN, 22));
+		pwd.setFont(pwd.getFont().deriveFont(22f));
 		pwd.setForeground(Color.white);
 		pwd.setBackground(Color.black);
 		pwd.setCaretColor(Color.white);
@@ -99,13 +98,13 @@ public class LoginPanel extends JPanel
 		l_1.setAlignmentX(Component.CENTER_ALIGNMENT);
 		l_1.setForeground(Color.white);
 		l_1.setOpaque(false);
-		l_1.setFont(new Font("SANDBOX", Font.PLAIN, 16));
+		l_1.setFont(l_1.getFont().deriveFont(16f));
 		Assistant.addLinkBahaviour(l_1, "http://dakror.de/#register");
 		
 		Component verticalStrut_1 = Box.createVerticalStrut(20);
 		verticalBox.add(verticalStrut_1);
 		
-		final JButton login = new JButton(" Anmelden ")
+		final JButton login = new JButton("         Anmelden        ")
 		{
 			private static final long serialVersionUID = 1L;
 			
@@ -122,7 +121,7 @@ public class LoginPanel extends JPanel
 		login.setEnabled(false);
 		login.setFocusPainted(false);
 		login.setBorder(new AreaBorder(Color.gray));
-		login.setFont(new Font("SANDBOX", Font.PLAIN, 35));
+		login.setFont(login.getFont().deriveFont(35f));
 		
 		Component verticalStrut = Box.createVerticalStrut(20);
 		verticalBox.add(verticalStrut);

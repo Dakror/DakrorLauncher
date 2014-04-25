@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -107,7 +106,7 @@ public class AppPanel extends JPanel
 		JLabel name = new JLabel(app.getName());
 		title.add(name);
 		name.setForeground(Color.WHITE);
-		name.setFont(new Font("SANDBOX", Font.PLAIN, 19));
+		name.setFont(name.getFont().deriveFont(19f));
 		name.setAlignmentX(Component.CENTER_ALIGNMENT);
 		name.setHorizontalAlignment(SwingConstants.CENTER);
 		
@@ -120,7 +119,7 @@ public class AppPanel extends JPanel
 		final JTextPane desc = new JTextPane();
 		desc.setOpaque(false);
 		desc.setHighlighter(null);
-		desc.setFont(new Font("SANDBOX", Font.BOLD, 13));
+		desc.setFont(name.getFont().deriveFont(13f));
 		desc.setForeground(Color.WHITE);
 		desc.setText(app.getDescription());
 		desc.setEditable(false);

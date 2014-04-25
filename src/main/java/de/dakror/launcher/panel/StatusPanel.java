@@ -3,7 +3,6 @@ package de.dakror.launcher.panel;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -32,7 +31,7 @@ public class StatusPanel extends JPanel
 		add(progress);
 		
 		info = new JLabel("");
-		info.setFont(new Font("SANDBOX", Font.PLAIN, 16));
+		info.setFont(info.getFont().deriveFont(16f));
 		info.setVisible(false);
 		add(info);
 	}
