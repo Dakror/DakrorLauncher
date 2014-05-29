@@ -60,7 +60,7 @@ public class App
 			
 			File f = new File(cache, bgFile);
 			
-			if (!f.exists()) Helper.copyInputStream(new URL("http://dakror.de/img/app/" + bgFile).openStream(), new FileOutputStream(f));
+			if (!f.exists() && DakrorLauncher.internet) Helper.copyInputStream(new URL("http://dakror.de/img/app/" + bgFile).openStream(), new FileOutputStream(f));
 		}
 		catch (Exception e)
 		{

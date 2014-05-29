@@ -51,9 +51,10 @@ public class DakrorLauncher extends JFrame
 	public static DakrorLauncher currentLauncher;
 	public static SLPanel slPanel = new SLPanel();
 	
+	public static boolean internet;
 	public static int userId;
 	public static String username;
-	public static String pwdMd5;
+	public static String pwdMd5 = "pwd";
 	public TitlePanel titlePanel = new TitlePanel();
 	
 	LoginPanel loginPanel = new LoginPanel();
@@ -83,7 +84,7 @@ public class DakrorLauncher extends JFrame
 		setIconImage(Game.getImage("dakror6.png"));
 		
 		AppLoader.getApps();
-		new DownloadManager();
+		if (internet) new DownloadManager();
 		
 		initComponents();
 		initSL();
@@ -91,7 +92,7 @@ public class DakrorLauncher extends JFrame
 		DakrorBin.init(this, "DakrorLauncher");
 		try
 		{
-			DakrorBin.checkForUpdates();
+			if (internet) DakrorBin.checkForUpdates();
 		}
 		catch (Exception e)
 		{
@@ -99,11 +100,11 @@ public class DakrorLauncher extends JFrame
 		}
 	}
 	
-	public static String getLastLogin()
+	public static String[] getLastLogin()
 	{
 		File f = new File(CFG.DIR, "lastlogin");
-		if (f.exists()) return Helper.getFileContent(f).trim();
-		return "";
+		if (f.exists()) return Helper.getFileContent(f).trim().split(":");
+		return new String[] { "", "" };
 	}
 	
 	public static void setLastLogin()
@@ -112,7 +113,7 @@ public class DakrorLauncher extends JFrame
 		{
 			File f = new File(CFG.DIR, "lastlogin");
 			f.createNewFile();
-			Helper.setFileContent(f, username);
+			Helper.setFileContent(f, username + ":" + userId);
 		}
 		catch (IOException e)
 		{
@@ -176,6 +177,7 @@ public class DakrorLauncher extends JFrame
 	
 	public static void main(String[] args)
 	{
+		internet = Helper.isInternetReachable();
 		SLAnimator.start();
 		new Game();
 		Properties p = new Properties();

@@ -89,6 +89,7 @@ public class TitlePanel extends JPanel
 			}
 		});
 		horizontalBox.add(userIcon);
+		if (!DakrorLauncher.internet) userIcon.setEnabled(false);
 		userIcon.setOpaque(false);
 		userIcon.setBorder(new LineBorder(new Color(0, 0, 0)));
 		userIcon.setFocusPainted(false);
@@ -141,7 +142,7 @@ public class TitlePanel extends JPanel
 			{
 				try
 				{
-					userIcon.setIcon(new ImageIcon(ImageIO.read(new URL(Helper.getURLContent(new URL("http://dakror.de/mp-api/logo?id=" + DakrorLauncher.userId)))).getScaledInstance(userIcon.getPreferredSize().width, userIcon.getPreferredSize().height, Image.SCALE_SMOOTH)));
+					if (DakrorLauncher.internet) userIcon.setIcon(new ImageIcon(ImageIO.read(new URL(Helper.getURLContent(new URL("http://dakror.de/mp-api/logo?id=" + DakrorLauncher.userId)))).getScaledInstance(userIcon.getPreferredSize().width, userIcon.getPreferredSize().height, Image.SCALE_SMOOTH)));
 				}
 				catch (Exception e)
 				{

@@ -63,6 +63,7 @@ public class AppPanel extends JPanel
 			{
 				try
 				{
+					CFG.p("java" + (System.getProperty("os.name").toLowerCase().contains("win") ? "w" : ""), "-jar", new File(CFG.DIR, DakrorLauncher.userId + "/apps/" + app.getName().replace(" ", "-") + "/" + app.getName().replace(" ", "-") + ".jar").getPath().replace("\\", "/"), "-un=" + DakrorLauncher.username, "-upwd=" + DakrorLauncher.pwdMd5);
 					Runtime.getRuntime().exec(new String[] { "java" + (System.getProperty("os.name").toLowerCase().contains("win") ? "w" : ""), "-jar", new File(CFG.DIR, DakrorLauncher.userId + "/apps/" + app.getName().replace(" ", "-") + "/" + app.getName().replace(" ", "-") + ".jar").getPath().replace("\\", "/"), "-un=" + DakrorLauncher.username, "-upwd=" + DakrorLauncher.pwdMd5 });
 				}
 				catch (IOException e1)

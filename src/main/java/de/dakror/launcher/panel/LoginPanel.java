@@ -63,7 +63,7 @@ public class LoginPanel extends JPanel
 		verticalBox.add(verticalStrut_3);
 		
 		final JHintTextField usr = new JHintTextField("Benutzername");
-		usr.setText(DakrorLauncher.getLastLogin());
+		usr.setText(DakrorLauncher.getLastLogin()[0]);
 		verticalBox.add(usr);
 		usr.setBorder(BorderFactory.createLineBorder(Color.gray));
 		usr.foreGround = Color.white;
@@ -118,7 +118,7 @@ public class LoginPanel extends JPanel
 		verticalBox.add(login);
 		login.setAlignmentX(Component.CENTER_ALIGNMENT);
 		login.setHorizontalAlignment(SwingConstants.LEFT);
-		login.setEnabled(false);
+		login.setEnabled(!DakrorLauncher.internet);
 		login.setFocusPainted(false);
 		login.setBorder(new AreaBorder(Color.gray));
 		login.setFont(login.getFont().deriveFont(35f));
@@ -135,6 +135,26 @@ public class LoginPanel extends JPanel
 			{
 				try
 				{
+					if (!DakrorLauncher.internet)
+					{
+						if (usr.getText().equals(DakrorLauncher.getLastLogin()[0]))
+						{
+							DakrorLauncher.userId = Integer.parseInt(DakrorLauncher.getLastLogin()[1]);
+							DakrorLauncher.setUsername(DakrorLauncher.getLastLogin()[0]);
+							DakrorLauncher.pwdMd5 = "";
+							
+							for (App app : AppLoader.apps)
+								app.updateStatus();
+							for (Component c : DakrorLauncher.currentLauncher.alp.getComponents())
+								if (c instanceof AppPanel) ((AppPanel) c).onLogin();
+							
+							DakrorLauncher.currentLauncher.titlePanel.loadLogo();
+							DakrorLauncher.currentLauncher.slideTo(UIState.MAIN);
+							
+							return;
+						}
+					}
+					
 					String pw = new String(HexBin.encode(MessageDigest.getInstance("MD5").digest(new String(pwd.getPassword()).getBytes()))).toLowerCase();
 					String s = Helper.getURLContent(new URL("http://dakror.de/mp-api/login_noip.php?username=" + usr.getText() + "&password=" + pw)).trim();
 					
@@ -146,7 +166,7 @@ public class LoginPanel extends JPanel
 						DakrorLauncher.pwdMd5 = pw;
 						DakrorLauncher.setLastLogin();
 						pwd.setText("");
-						usr.setText(DakrorLauncher.getLastLogin());
+						usr.setText(DakrorLauncher.getLastLogin()[0]);
 						login.setEnabled(false);
 						
 						for (App app : AppLoader.apps)
