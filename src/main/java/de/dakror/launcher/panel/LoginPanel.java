@@ -93,18 +93,18 @@ public class LoginPanel extends JPanel
 		Component verticalStrut_2 = Box.createVerticalStrut(5);
 		verticalBox.add(verticalStrut_2);
 		
-		JLabel l_1 = new JLabel("Noch kein Konto? Registrieren!");
+		JLabel l_1 = new JLabel("No account yet? Register!");
 		verticalBox.add(l_1);
 		l_1.setAlignmentX(Component.CENTER_ALIGNMENT);
 		l_1.setForeground(Color.white);
 		l_1.setOpaque(false);
 		l_1.setFont(l_1.getFont().deriveFont(16f));
-		Assistant.addLinkBahaviour(l_1, "http://dakror.de/#register");
+		Assistant.addLinkBahaviour(l_1, "http://dakror.de/register");
 		
 		Component verticalStrut_1 = Box.createVerticalStrut(20);
 		verticalBox.add(verticalStrut_1);
 		
-		final JButton login = new JButton("         Anmelden        ")
+		final JButton login = new JButton("         Login        ")
 		{
 			private static final long serialVersionUID = 1L;
 			
@@ -181,7 +181,7 @@ public class LoginPanel extends JPanel
 					{
 						pwd.setText("");
 						login.setEnabled(false);
-						JOptionPane.showMessageDialog(DakrorLauncher.currentLauncher, "Login inkorrekt!", "Login inkorrekt!", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(DakrorLauncher.currentLauncher, "Invalid login!", "Invalid login!", JOptionPane.ERROR_MESSAGE);
 					}
 				}
 				catch (Exception e1)

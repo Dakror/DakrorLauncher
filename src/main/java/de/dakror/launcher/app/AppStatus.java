@@ -5,10 +5,10 @@ package de.dakror.launcher.app;
  */
 public enum AppStatus
 {
-	OK("", "Auf dem neuesten Stand"),
-	UPDATE("Aktualisierung", "Aktualisieren"),
-	NOT_INSTALLED("Installation", "Installieren"),
-	DOWNLOADING("Lade herunter", "Lade herunter"),
+	OK("", "Up to date"),
+	UPDATE("Update", "Update to the latest version"),
+	NOT_INSTALLED("Installation", "Install the application"),
+	DOWNLOADING("Downloading", "Downloading data"),
 	
 	;
 	

@@ -68,18 +68,18 @@ public class TitlePanel extends JPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				String link = JOptionPane.showInputDialog(DakrorLauncher.currentLauncher, "Bitte gib den Link zum gewünschten Bild an.", "Profilbild ändern", JOptionPane.QUESTION_MESSAGE);
+				String link = JOptionPane.showInputDialog(DakrorLauncher.currentLauncher, "Please enter the link to your new picture.", "change profile picture", JOptionPane.QUESTION_MESSAGE);
 				if (link == null) return;
 				
 				link = link.trim();
 				
-				if (!link.startsWith("http")) JOptionPane.showMessageDialog(DakrorLauncher.currentLauncher, "Dies ist kein gültiger Link!", "Ungültiger Link!", JOptionPane.ERROR_MESSAGE);
+				if (!link.startsWith("http")) JOptionPane.showMessageDialog(DakrorLauncher.currentLauncher, "This is no valid link!", "Invalid link!", JOptionPane.ERROR_MESSAGE);
 				else
 				{
 					try
 					{
 						if (Helper.getURLContent(new URL("http://dakror.de/mp-api/logo?id=" + DakrorLauncher.userId + "&password=" + DakrorLauncher.pwdMd5 + "&newlogo=" + link)).contains("true")) loadLogo();
-						else JOptionPane.showMessageDialog(DakrorLauncher.currentLauncher, "Profilbild konnte nicht geändert werden!", "Fehler!", JOptionPane.ERROR_MESSAGE);
+						else JOptionPane.showMessageDialog(DakrorLauncher.currentLauncher, "Couldn't change profile picture!", "Error!", JOptionPane.ERROR_MESSAGE);
 					}
 					catch (MalformedURLException e1)
 					{
@@ -111,7 +111,7 @@ public class TitlePanel extends JPanel
 		horizontalBox_1.add(verticalBox_1);
 		
 		JButton logout = new JButton("");
-		logout.setToolTipText("Abmelden");
+		logout.setToolTipText("Logout");
 		logout.setFocusPainted(false);
 		logout.setContentAreaFilled(false);
 		verticalBox_1.add(logout);
