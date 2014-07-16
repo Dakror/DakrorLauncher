@@ -17,12 +17,14 @@ public class App
 	String name;
 	String desc;
 	String bgFile;
-	int id;
+	int id, state, date;
 	long onlineVersion;
 	
-	public App(int id, String name, String bgFile, String desc, long onlineVersion)
+	public App(int id, int state, int date, String name, String bgFile, String desc, long onlineVersion)
 	{
 		this.id = id;
+		this.state = state;
+		this.date = date;
 		this.name = name;
 		this.bgFile = bgFile;
 		this.desc = desc;
@@ -60,7 +62,7 @@ public class App
 			
 			File f = new File(cache, bgFile);
 			
-			if (!f.exists() && DakrorLauncher.internet) Helper.copyInputStream(new URL("http://dakror.de/img/app/" + bgFile).openStream(), new FileOutputStream(f));
+			if (!f.exists() && DakrorLauncher.internet) Helper.copyInputStream(new URL("http://dakror.de/assets/img/app/" + bgFile).openStream(), new FileOutputStream(f));
 		}
 		catch (Exception e)
 		{
@@ -97,5 +99,15 @@ public class App
 	public int getId()
 	{
 		return id;
+	}
+	
+	public int getState()
+	{
+		return state;
+	}
+	
+	public int getDate()
+	{
+		return date;
 	}
 }

@@ -48,6 +48,8 @@ public class AppPanel extends JPanel
 {
 	private static final long serialVersionUID = 1L;
 	
+	public static final String[] APP_STATES = { "in Development", "released", "broken", "abandoned" };
+	
 	public App app;
 	JLabel bg;
 	JButton status;
@@ -121,7 +123,13 @@ public class AppPanel extends JPanel
 		desc.setHighlighter(null);
 		desc.setFont(name.getFont().deriveFont(13f));
 		desc.setForeground(Color.WHITE);
-		desc.setText(app.getDescription());
+		
+		String add = "\n\n";
+		String date = app.getDate() + "";
+		if (app.getState() == 1 || app.getState() == 2) add += "Finish-date: " + date.substring(4) + "." + date.substring(0, 4) + "\n";
+		add += "This game is " + APP_STATES[app.getState()];
+		
+		desc.setText(app.getDescription() + add);
 		desc.setEditable(false);
 		desc.setBounds(1, 155, 248, 145);
 		layeredPane.add(desc);

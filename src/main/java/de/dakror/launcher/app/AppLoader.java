@@ -29,14 +29,17 @@ public class AppLoader
 				for (int i = 0; i < a.length(); i++)
 				{
 					JSONObject o = a.getJSONObject(i);
-					apps.add(new App(o.getInt("ID"), o.getString("NAME"), o.getString("IMAGE"), o.getString("DESCRIPTION"), o.getLong("VERSION")));
+					if (o.getInt("TYPE") == 0)
+					{
+						apps.add(new App(o.getInt("ID"), o.getInt("STATE"), o.getInt("DATE"), o.getString("NAME"), o.getString("IMAGE"), o.getString("DESCRIPTION"), o.getLong("VERSION")));
+					}
 				}
 			}
 			else
 			{
 				for (File f : new File(CFG.DIR, DakrorLauncher.getLastLogin()[1] + "/apps/").listFiles())
 				{
-					apps.add(new App(0, f.getName(), f.getName().toLowerCase() + ".png", "", 1));
+					apps.add(new App(0, 0, 0, f.getName(), f.getName().toLowerCase() + ".png", "", 1));
 				}
 			}
 		}
