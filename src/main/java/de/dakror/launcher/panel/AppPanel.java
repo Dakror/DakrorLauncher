@@ -48,7 +48,7 @@ public class AppPanel extends JPanel
 {
 	private static final long serialVersionUID = 1L;
 	
-	public static final String[] APP_STATES = { "in Development", "released", "broken", "abandoned" };
+	public static final String[] APP_STATES = { "in development", "released", "broken", "abandoned" };
 	
 	public App app;
 	JLabel bg;
@@ -96,7 +96,17 @@ public class AppPanel extends JPanel
 		
 		add(layeredPane);
 		
-		JPanel title = new JPanel();
+		JPanel title = new JPanel()
+		{
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			public void paint(Graphics g)
+			{
+				g.setClip(Assistant.getClipArea(0, 0, getWidth() + 1, 399));
+				super.paint(g);
+			}
+		};;
 		title.setBackground(new Color(0, 0, 0, 0.7f));
 		title.setBounds(0, 0, 248, 40);
 		layeredPane.add(title);

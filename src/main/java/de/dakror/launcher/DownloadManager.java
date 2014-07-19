@@ -135,7 +135,7 @@ public class DownloadManager extends Thread
 	
 	public void updateTitle(Download d)
 	{
-		DakrorLauncher.currentLauncher.statusPanel.info.setText(d.status.getName() + ": " + d.app.getName() + " (" + Helper.formatBinarySize(d.size, 2) + ")" + (queue.size() > 1 ? " und " + (queue.size() - 1) + " weitere." : ""));
+		DakrorLauncher.currentLauncher.statusPanel.info.setText(d.status.getName() + ": " + d.app.getName() + " (" + Helper.formatBinarySize(d.size, 2) + ")" + (queue.size() > 1 ? " and " + (queue.size() - 1) + " more." : ""));
 	}
 	
 	public int getProgress()
