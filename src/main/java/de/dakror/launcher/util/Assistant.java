@@ -18,10 +18,8 @@ import de.dakror.launcher.DakrorLauncher;
 /**
  * @author Dakror
  */
-public class Assistant
-{
-	public static Area getClipArea(int x, int y, int width, int height)
-	{
+public class Assistant {
+	public static Area getClipArea(int x, int y, int width, int height) {
 		int rad = 25;
 		rad = height == 400 || height == 401 || height == 399 ? 50 : rad; // AppPanel
 		Area a = new Area(new RoundRectangle2D.Double(x, y, width - 1, height - 1, rad, rad));
@@ -40,36 +38,28 @@ public class Assistant
 		return a;
 	}
 	
-	public static void addLinkBahaviour(final JComponent c, final String link)
-	{
+	public static void addLinkBahaviour(final JComponent c, final String link) {
 		final Color foreGround = c.getForeground();
-		c.addMouseListener(new MouseAdapter()
-		{
+		c.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseEntered(MouseEvent e)
-			{
+			public void mouseEntered(MouseEvent e) {
 				c.setForeground(Color.decode("#8888ff"));
 				c.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 				DakrorLauncher.currentLauncher.repaint();
 			}
 			
 			@Override
-			public void mouseExited(MouseEvent e)
-			{
+			public void mouseExited(MouseEvent e) {
 				c.setForeground(foreGround);
 				c.setCursor(Cursor.getDefaultCursor());
 				DakrorLauncher.currentLauncher.repaint();
 			}
 			
 			@Override
-			public void mousePressed(MouseEvent e)
-			{
-				try
-				{
+			public void mousePressed(MouseEvent e) {
+				try {
 					Desktop.getDesktop().browse(new URI(link));
-				}
-				catch (Exception e1)
-				{
+				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
 			}

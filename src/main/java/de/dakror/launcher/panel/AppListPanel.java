@@ -7,12 +7,10 @@ import javax.swing.JPanel;
 /**
  * @author Dakror
  */
-public class AppListPanel extends JPanel
-{
+public class AppListPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
-	public AppListPanel()
-	{
+	public AppListPanel() {
 		setSize(1200, 900);
 		setLayout(new FlowLayout(FlowLayout.CENTER, 15, 50));
 		setOpaque(false);

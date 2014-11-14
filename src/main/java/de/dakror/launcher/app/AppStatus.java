@@ -3,8 +3,7 @@ package de.dakror.launcher.app;
 /**
  * @author Dakror
  */
-public enum AppStatus
-{
+public enum AppStatus {
 	OK("", "Up to date"),
 	UPDATE("Update", "Update to the latest version"),
 	NOT_INSTALLED("Installation", "Install the application"),
@@ -15,19 +14,16 @@ public enum AppStatus
 	private String name;
 	private String description;
 	
-	private AppStatus(String name, String desc)
-	{
+	private AppStatus(String name, String desc) {
 		this.name = name;
 		description = desc;
 	}
 	
-	public String getName()
-	{
+	public String getName() {
 		return name;
 	}
 	
-	public String getDescription()
-	{
+	public String getDescription() {
 		return description;
 	}
 }

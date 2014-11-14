@@ -44,8 +44,7 @@ import de.dakror.launcher.util.Assistant;
 /**
  * @author Dakror
  */
-public class AppPanel extends JPanel
-{
+public class AppPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
 	public static final String[] APP_STATES = { "in development", "released", "broken", "abandoned" };
@@ -56,19 +55,13 @@ public class AppPanel extends JPanel
 	
 	boolean statusHovered;
 	
-	MouseAdapter launch = new MouseAdapter()
-	{
+	MouseAdapter launch = new MouseAdapter() {
 		@Override
-		public void mousePressed(MouseEvent e)
-		{
-			if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() == 2)
-			{
-				try
-				{
+		public void mousePressed(MouseEvent e) {
+			if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() == 2) {
+				try {
 					Runtime.getRuntime().exec(new String[] { "java" + (System.getProperty("os.name").toLowerCase().contains("win") ? "w" : ""), "-jar", new File(CFG.DIR, DakrorLauncher.userId + "/apps/" + app.getName().replace(" ", "-") + "/" + app.getName().replace(" ", "-") + ".jar").getPath().replace("\\", "/"), "-un=" + DakrorLauncher.username, "-upwd=" + DakrorLauncher.pwdMd5 });
-				}
-				catch (IOException e1)
-				{
+				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
 			}
@@ -77,8 +70,7 @@ public class AppPanel extends JPanel
 	
 	JLayeredPane layeredPane;
 	
-	public AppPanel(App app)
-	{
+	public AppPanel(App app) {
 		this.app = app;
 		
 		final Polygon p = new Polygon();
@@ -96,13 +88,11 @@ public class AppPanel extends JPanel
 		
 		add(layeredPane);
 		
-		JPanel title = new JPanel()
-		{
+		JPanel title = new JPanel() {
 			private static final long serialVersionUID = 1L;
 			
 			@Override
-			public void paint(Graphics g)
-			{
+			public void paint(Graphics g) {
 				g.setClip(Assistant.getClipArea(0, 0, getWidth() + 1, 399));
 				super.paint(g);
 			}
@@ -149,13 +139,11 @@ public class AppPanel extends JPanel
 		descBg.setBackground(new Color(0, 0, 0, 0.6f));
 		layeredPane.add(descBg);
 		
-		bg = new JLabel("")
-		{
+		bg = new JLabel("") {
 			private static final long serialVersionUID = 1L;
 			
 			@Override
-			public void paint(Graphics g)
-			{
+			public void paint(Graphics g) {
 				g.setClip(Assistant.getClipArea(0, 0, getWidth() + 1, 399));
 				super.paint(g);
 			}
@@ -164,33 +152,26 @@ public class AppPanel extends JPanel
 		bg.setBounds(1, 1, 248, 399);
 		layeredPane.add(bg);
 		
-		status = new JButton(new AbstractAction()
-		{
+		status = new JButton(new AbstractAction() {
 			private static final long serialVersionUID = 1L;
 			
 			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				if (AppPanel.this.app.getStatus() != AppStatus.OK && AppPanel.this.app.getStatus() != AppStatus.DOWNLOADING)
-				{
+			public void actionPerformed(ActionEvent e) {
+				if (AppPanel.this.app.getStatus() != AppStatus.OK && AppPanel.this.app.getStatus() != AppStatus.DOWNLOADING) {
 					DownloadManager.manager.addDownload(new Download(AppPanel.this.app));
 					AppPanel.this.app.setStatus(AppStatus.DOWNLOADING);
 				}
 			}
 			
-		})
-		{
+		}) {
 			private static final long serialVersionUID = 1L;
 			
 			@Override
-			public void paint(Graphics g)
-			{
+			public void paint(Graphics g) {
 				
-				if (AppPanel.this.app.getStatus() == AppStatus.NOT_INSTALLED)
-				{
+				if (AppPanel.this.app.getStatus() == AppStatus.NOT_INSTALLED) {
 					if (statusHovered) super.paint(g);
-				}
-				else super.paint(g);
+				} else super.paint(g);
 			}
 		};
 		
@@ -199,21 +180,17 @@ public class AppPanel extends JPanel
 		status.setContentAreaFilled(false);
 		status.setBorderPainted(false);
 		status.setFocusPainted(false);
-		status.addMouseListener(new MouseAdapter()
-		{
+		status.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseExited(MouseEvent e)
-			{
+			public void mouseExited(MouseEvent e) {
 				setCursor(Cursor.getDefaultCursor());
 				statusHovered = false;
 				status.repaint();
 			}
 		});
-		status.addMouseMotionListener(new MouseMotionAdapter()
-		{
+		status.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
-			public void mouseMoved(MouseEvent e)
-			{
+			public void mouseMoved(MouseEvent e) {
 				if (p.contains(e.getPoint())) setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 				else setCursor(Cursor.getDefaultCursor());
 				
@@ -225,23 +202,18 @@ public class AppPanel extends JPanel
 		status.setBounds(150, 300, 99, 99);
 		layeredPane.add(status);
 		
-		if (app.getStatus() == AppStatus.OK)
-		{
-			for (Component c : layeredPane.getComponents())
-			{
+		if (app.getStatus() == AppStatus.OK) {
+			for (Component c : layeredPane.getComponents()) {
 				c.addMouseListener(launch);
 				c.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 			}
 		}
 	}
 	
-	public void onLogin()
-	{
-		new Thread()
-		{
+	public void onLogin() {
+		new Thread() {
 			@Override
-			public void run()
-			{
+			public void run() {
 				app.cacheBgFile();
 				
 				BufferedImage bi = new BufferedImage(248, 399, BufferedImage.TYPE_INT_ARGB);
@@ -259,24 +231,18 @@ public class AppPanel extends JPanel
 		updateStatus();
 	}
 	
-	public void updateStatus()
-	{
+	public void updateStatus() {
 		app.updateStatus();
 		status.setIcon(new ImageIcon(Game.getImage("status/" + app.getStatus().name().toLowerCase() + ".png").getScaledInstance(99, 99, Image.SCALE_DEFAULT)));
 		status.setToolTipText(app.getStatus().getDescription());
 		
-		if (app.getStatus() == AppStatus.OK)
-		{
-			for (Component c : layeredPane.getComponents())
-			{
+		if (app.getStatus() == AppStatus.OK) {
+			for (Component c : layeredPane.getComponents()) {
 				c.addMouseListener(launch);
 				c.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 			}
-		}
-		else
-		{
-			for (Component c : layeredPane.getComponents())
-			{
+		} else {
+			for (Component c : layeredPane.getComponents()) {
 				c.removeMouseListener(launch);
 				c.setCursor(Cursor.getDefaultCursor());
 			}
@@ -286,10 +252,8 @@ public class AppPanel extends JPanel
 	}
 	
 	@Override
-	public void paint(Graphics g)
-	{
-		if (app.getStatus() != AppStatus.NOT_INSTALLED)
-		{
+	public void paint(Graphics g) {
+		if (app.getStatus() != AppStatus.NOT_INSTALLED) {
 			int rad = 25;
 			rad = getHeight() == 400 || getHeight() == 401 || getHeight() == 399 ? 50 : rad; // AppPanel
 			Area a = new Area(new RoundRectangle2D.Double(0, 0, getWidth() - 1, getHeight() - 1, rad, rad));
@@ -302,9 +266,7 @@ public class AppPanel extends JPanel
 			g.setColor(Color.gray);
 			((Graphics2D) g).setStroke(new BasicStroke(1));
 			((Graphics2D) g).draw(a);
-		}
-		else
-		{
+		} else {
 			super.paint(g);
 			g.setColor(Color.gray);
 			((Graphics2D) g).setStroke(new BasicStroke(1));

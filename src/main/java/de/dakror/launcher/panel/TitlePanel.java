@@ -29,15 +29,13 @@ import de.dakror.launcher.settings.UIStateChange.UIState;
 /**
  * @author Dakror
  */
-public class TitlePanel extends JPanel
-{
+public class TitlePanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	public JLabel userName;
 	
 	JButton userIcon;
 	
-	public TitlePanel()
-	{
+	public TitlePanel() {
 		setSize(1200, 90);
 		setLayout(new BorderLayout(0, 0));
 		
@@ -60,29 +58,23 @@ public class TitlePanel extends JPanel
 		Component horizontalStrut_1 = Box.createHorizontalStrut(5);
 		horizontalBox.add(horizontalStrut_1);
 		
-		userIcon = new JButton(new AbstractAction("")
-		{
+		userIcon = new JButton(new AbstractAction("") {
 			
 			private static final long serialVersionUID = 1L;
 			
 			@Override
-			public void actionPerformed(ActionEvent e)
-			{
+			public void actionPerformed(ActionEvent e) {
 				String link = JOptionPane.showInputDialog(DakrorLauncher.currentLauncher, "Please enter the link to your new picture.", "change profile picture", JOptionPane.QUESTION_MESSAGE);
 				if (link == null) return;
 				
 				link = link.trim();
 				
 				if (!link.startsWith("http")) JOptionPane.showMessageDialog(DakrorLauncher.currentLauncher, "This is no valid link!", "Invalid link!", JOptionPane.ERROR_MESSAGE);
-				else
-				{
-					try
-					{
+				else {
+					try {
 						if (Helper.getURLContent(new URL("http://dakror.de/mp-api/logo?id=" + DakrorLauncher.userId + "&password=" + DakrorLauncher.pwdMd5 + "&newlogo=" + link)).contains("true")) loadLogo();
 						else JOptionPane.showMessageDialog(DakrorLauncher.currentLauncher, "Couldn't change profile picture!", "Error!", JOptionPane.ERROR_MESSAGE);
-					}
-					catch (MalformedURLException e1)
-					{
+					} catch (MalformedURLException e1) {
 						e1.printStackTrace();
 					}
 				}
@@ -119,11 +111,9 @@ public class TitlePanel extends JPanel
 		logout.setMinimumSize(new Dimension(40, 40));
 		logout.setSize(new Dimension(40, 40));
 		logout.setPreferredSize(new Dimension(40, 40));
-		logout.addActionListener(new ActionListener()
-		{
+		logout.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e)
-			{
+			public void actionPerformed(ActionEvent e) {
 				DakrorLauncher.userId = 0;
 				DakrorLauncher.setUsername(null);
 				DakrorLauncher.currentLauncher.slideTo(UIState.LOGIN);
@@ -133,19 +123,13 @@ public class TitlePanel extends JPanel
 		logout.setIcon(new ImageIcon(Game.getImage("Logout.png").getScaledInstance(40, 40, Image.SCALE_SMOOTH)));
 	}
 	
-	public void loadLogo()
-	{
-		new Thread()
-		{
+	public void loadLogo() {
+		new Thread() {
 			@Override
-			public void run()
-			{
-				try
-				{
+			public void run() {
+				try {
 					if (DakrorLauncher.internet) userIcon.setIcon(new ImageIcon(ImageIO.read(new URL(Helper.getURLContent(new URL("http://dakror.de/mp-api/logo?id=" + DakrorLauncher.userId)))).getScaledInstance(userIcon.getPreferredSize().width, userIcon.getPreferredSize().height, Image.SCALE_SMOOTH)));
-				}
-				catch (Exception e)
-				{
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}

@@ -11,15 +11,13 @@ import javax.swing.JProgressBar;
 /**
  * @author Dakror
  */
-public class StatusPanel extends JPanel
-{
+public class StatusPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
 	public JProgressBar progress;
 	public JLabel info;
 	
-	public StatusPanel()
-	{
+	public StatusPanel() {
 		setSize(1200, 32);
 		setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 		
@@ -36,8 +34,7 @@ public class StatusPanel extends JPanel
 		add(info);
 	}
 	
-	public void setComponentsVisible(boolean b)
-	{
+	public void setComponentsVisible(boolean b) {
 		for (Component c : getComponents())
 			c.setVisible(b);
 	}

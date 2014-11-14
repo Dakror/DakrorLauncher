@@ -18,20 +18,16 @@ import de.dakror.launcher.settings.CFG;
 /**
  * @author Dakror
  */
-public class DownloadManager extends Thread
-{
-	public static class Download
-	{
+public class DownloadManager extends Thread {
+	public static class Download {
 		public URL url;
 		public File dest;
 		public long size;
 		public App app;
 		public AppStatus status;
 		
-		public Download(App app)
-		{
-			try
-			{
+		public Download(App app) {
+			try {
 				this.app = app;
 				status = AppStatus.valueOf(app.getStatus().name());
 				String escName = app.getName().replace(" ", "-");
@@ -39,15 +35,12 @@ public class DownloadManager extends Thread
 				dest = new File(CFG.DIR, DakrorLauncher.userId + "/apps/" + escName + "/" + escName + ".jar");
 				URLConnection con = url.openConnection();
 				size = con.getContentLengthLong();
-			}
-			catch (Exception e)
-			{
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 		
-		public void downloadVersionFile() throws Exception
-		{
+		public void downloadVersionFile() throws Exception {
 			String escName = app.getName().replace(" ", "-");
 			Helper.copyInputStream(new URL("http://dakror.de/bin/" + escName + ".version").openStream(), new FileOutputStream(new File(CFG.DIR, DakrorLauncher.userId + "/apps/" + escName + "/" + escName + ".version")));
 		}
@@ -59,8 +52,7 @@ public class DownloadManager extends Thread
 	boolean cancel;
 	long downloaded;
 	
-	public DownloadManager()
-	{
+	public DownloadManager() {
 		manager = this;
 		queue = new ArrayList<Download>();
 		setName("Download Thread");
@@ -69,14 +61,10 @@ public class DownloadManager extends Thread
 	}
 	
 	@Override
-	public void run()
-	{
-		while (true)
-		{
-			if (queue.size() > 0)
-			{
-				try
-				{
+	public void run() {
+		while (true) {
+			if (queue.size() > 0) {
+				try {
 					DakrorLauncher.currentLauncher.statusPanel.setComponentsVisible(true);
 					downloaded = 0;
 					Download d = queue.get(0);
@@ -90,11 +78,9 @@ public class DownloadManager extends Thread
 					OutputStream out = new FileOutputStream(d.dest);
 					byte[] buffer = new byte[1024];
 					int len = in.read(buffer);
-					while (len >= 0)
-					{
+					while (len >= 0) {
 						updateTitle(d);
-						if (cancel)
-						{
+						if (cancel) {
 							cancel = false;
 							break;
 						}
@@ -115,52 +101,41 @@ public class DownloadManager extends Thread
 					downloadFinished();
 					
 					if (queue.size() == 0) DakrorLauncher.currentLauncher.statusPanel.setComponentsVisible(false);
-				}
-				catch (Exception e)
-				{
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 			
-			try
-			{
+			try {
 				Thread.sleep(16);
-			}
-			catch (InterruptedException e)
-			{
+			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
 	}
 	
-	public void updateTitle(Download d)
-	{
+	public void updateTitle(Download d) {
 		DakrorLauncher.currentLauncher.statusPanel.info.setText(d.status.getName() + ": " + d.app.getName() + " (" + Helper.formatBinarySize(d.size, 2) + ")" + (queue.size() > 1 ? " and " + (queue.size() - 1) + " more." : ""));
 	}
 	
-	public int getProgress()
-	{
+	public int getProgress() {
 		return (int) (downloaded / (double) getActiveDownload().size * 100);
 	}
 	
-	public void addDownload(Download d)
-	{
+	public void addDownload(Download d) {
 		queue.add(d);
 	}
 	
-	public Download getActiveDownload()
-	{
+	public Download getActiveDownload() {
 		if (queue.size() == 0) return null;
 		return queue.get(0);
 	}
 	
-	public void cancelDownload()
-	{
+	public void cancelDownload() {
 		cancel = true;
 	}
 	
-	public void downloadFinished()
-	{
+	public void downloadFinished() {
 		if (queue.size() > 0) queue.remove(0);
 	}
 }

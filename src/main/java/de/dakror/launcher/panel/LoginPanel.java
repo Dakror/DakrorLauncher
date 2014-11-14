@@ -36,12 +36,10 @@ import de.dakror.launcher.util.Assistant;
 /**
  * @author Dakror
  */
-public class LoginPanel extends JPanel
-{
+public class LoginPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
-	public LoginPanel()
-	{
+	public LoginPanel() {
 		setSize(new Dimension(400, 250));
 		setBorder(new AreaBorder(Color.gray));
 		setBackground(new Color(0, 0, 0, 0.7f));
@@ -104,13 +102,11 @@ public class LoginPanel extends JPanel
 		Component verticalStrut_1 = Box.createVerticalStrut(20);
 		verticalBox.add(verticalStrut_1);
 		
-		final JButton login = new JButton("         Login        ")
-		{
+		final JButton login = new JButton("         Login        ") {
 			private static final long serialVersionUID = 1L;
 			
 			@Override
-			public void paint(Graphics g)
-			{
+			public void paint(Graphics g) {
 				g.setClip(Assistant.getClipArea(0, 0, getWidth() + 1, getHeight() + 1));
 				super.paint(g);
 			}
@@ -128,17 +124,12 @@ public class LoginPanel extends JPanel
 		
 		Component horizontalStrut_1 = Box.createHorizontalStrut(20);
 		add(horizontalStrut_1);
-		login.addActionListener(new ActionListener()
-		{
+		login.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				try
-				{
-					if (!DakrorLauncher.internet)
-					{
-						if (usr.getText().equals(DakrorLauncher.getLastLogin()[0]))
-						{
+			public void actionPerformed(ActionEvent e) {
+				try {
+					if (!DakrorLauncher.internet) {
+						if (usr.getText().equals(DakrorLauncher.getLastLogin()[0])) {
 							DakrorLauncher.userId = Integer.parseInt(DakrorLauncher.getLastLogin()[1]);
 							DakrorLauncher.setUsername(DakrorLauncher.getLastLogin()[0]);
 							DakrorLauncher.pwdMd5 = "";
@@ -158,8 +149,7 @@ public class LoginPanel extends JPanel
 					String pw = new String(HexBin.encode(MessageDigest.getInstance("MD5").digest(new String(pwd.getPassword()).getBytes()))).toLowerCase();
 					String s = Helper.getURLContent(new URL("http://dakror.de/mp-api/login_noip.php?username=" + usr.getText() + "&password=" + pw)).trim();
 					
-					if (s.contains("true"))
-					{
+					if (s.contains("true")) {
 						String[] p = s.split(":");
 						DakrorLauncher.userId = Integer.parseInt(p[1]);
 						DakrorLauncher.setUsername(p[2]);
@@ -176,27 +166,21 @@ public class LoginPanel extends JPanel
 						
 						DakrorLauncher.currentLauncher.titlePanel.loadLogo();
 						DakrorLauncher.currentLauncher.slideTo(UIState.MAIN);
-					}
-					else
-					{
+					} else {
 						pwd.setText("");
 						login.setEnabled(false);
 						JOptionPane.showMessageDialog(DakrorLauncher.currentLauncher, "Invalid login!", "Invalid login!", JOptionPane.ERROR_MESSAGE);
 					}
-				}
-				catch (Exception e1)
-				{
+				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
 				
 			}
 		});
 		
-		KeyAdapter ka = new KeyAdapter()
-		{
+		KeyAdapter ka = new KeyAdapter() {
 			@Override
-			public void keyReleased(KeyEvent e)
-			{
+			public void keyReleased(KeyEvent e) {
 				login.setEnabled(usr.getText().trim().length() > 0 && new String(pwd.getPassword()).trim().length() > 0);
 			}
 		};
@@ -205,8 +189,7 @@ public class LoginPanel extends JPanel
 	}
 	
 	@Override
-	public void paint(Graphics g)
-	{
+	public void paint(Graphics g) {
 		g.setClip(Assistant.getClipArea(0, 0, getWidth() + 1, getHeight() + 1));
 		super.paint(g);
 	}

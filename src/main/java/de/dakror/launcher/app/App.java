@@ -11,8 +11,7 @@ import de.dakror.launcher.settings.CFG;
 /**
  * @author Dakror
  */
-public class App
-{
+public class App {
 	AppStatus status;
 	String name;
 	String desc;
@@ -20,8 +19,7 @@ public class App
 	int id, state, date;
 	long onlineVersion;
 	
-	public App(int id, int state, int date, String name, String bgFile, String desc, long onlineVersion)
-	{
+	public App(int id, int state, int date, String name, String bgFile, String desc, long onlineVersion) {
 		this.id = id;
 		this.state = state;
 		this.date = date;
@@ -33,81 +31,64 @@ public class App
 		updateStatus();
 	}
 	
-	public void updateStatus()
-	{
+	public void updateStatus() {
 		File dir = new File(CFG.DIR, DakrorLauncher.userId + "/apps/" + name.replace(" ", "-"));
 		File version = new File(dir, name.replace(" ", "-") + ".version");
 		if (!dir.exists()) status = AppStatus.NOT_INSTALLED;
-		else
-		{
-			try
-			{
+		else {
+			try {
 				long v = Long.parseLong(Helper.getFileContent(version).trim());
 				if (v < onlineVersion) status = AppStatus.UPDATE;
 				else status = AppStatus.OK;
-			}
-			catch (Exception e)
-			{
+			} catch (Exception e) {
 				status = AppStatus.NOT_INSTALLED;
 			}
 		}
 	}
 	
-	public void cacheBgFile()
-	{
-		try
-		{
+	public void cacheBgFile() {
+		try {
 			File cache = new File(CFG.DIR, DakrorLauncher.userId + "/apps/" + name.replace(" ", "-"));
 			cache.mkdirs();
 			
 			File f = new File(cache, bgFile);
 			
 			if (!f.exists() && DakrorLauncher.internet) Helper.copyInputStream(new URL("http://dakror.de/assets/img/app/" + bgFile).openStream(), new FileOutputStream(f));
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public AppStatus getStatus()
-	{
+	public AppStatus getStatus() {
 		return status;
 	}
 	
-	public App setStatus(AppStatus status)
-	{
+	public App setStatus(AppStatus status) {
 		this.status = status;
 		return this;
 	}
 	
-	public String getName()
-	{
+	public String getName() {
 		return name;
 	}
 	
-	public String getDescription()
-	{
+	public String getDescription() {
 		return desc;
 	}
 	
-	public String getBgFile()
-	{
+	public String getBgFile() {
 		return bgFile;
 	}
 	
-	public int getId()
-	{
+	public int getId() {
 		return id;
 	}
 	
-	public int getState()
-	{
+	public int getState() {
 		return state;
 	}
 	
-	public int getDate()
-	{
+	public int getDate() {
 		return date;
 	}
 }

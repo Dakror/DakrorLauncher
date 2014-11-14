@@ -43,8 +43,7 @@ import de.dakror.launcher.util.Assistant;
 /**
  * @author Dakror
  */
-public class DakrorLauncher extends JFrame
-{
+public class DakrorLauncher extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
 	public static DakrorLauncher currentLauncher;
@@ -68,8 +67,7 @@ public class DakrorLauncher extends JFrame
 	HashMap<UIState, SLConfig> configs = new HashMap<>();
 	HashMap<UIStateChange, SLKeyframe> frames = new HashMap<>();
 	
-	public DakrorLauncher()
-	{
+	public DakrorLauncher() {
 		super("Dakror Launcher");
 		currentLauncher = this;
 		
@@ -90,29 +88,23 @@ public class DakrorLauncher extends JFrame
 		setVisible(true);
 	}
 	
-	public static String[] getLastLogin()
-	{
+	public static String[] getLastLogin() {
 		File f = new File(CFG.DIR, "lastlogin");
 		if (f.exists()) return Helper.getFileContent(f).trim().split(":");
 		return new String[] { "", "" };
 	}
 	
-	public static void setLastLogin()
-	{
-		try
-		{
+	public static void setLastLogin() {
+		try {
 			File f = new File(CFG.DIR, "lastlogin");
 			f.createNewFile();
 			Helper.setFileContent(f, username + ":" + userId);
-		}
-		catch (IOException e)
-		{
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public void initComponents()
-	{
+	public void initComponents() {
 		state = LOGIN;
 		
 		TexturedPanel cp = new TexturedPanel(Game.getImage("background2.png"));
@@ -140,33 +132,27 @@ public class DakrorLauncher extends JFrame
 		slPanel.initialize(configs.get(state));
 	}
 	
-	public void initSL()
-	{
+	public void initSL() {
 		frames.put(new UIStateChange(LOGIN, MAIN), new SLKeyframe(configs.get(MAIN), 0.6f).setEndSideForOldCmps(LEFT).setDelay(0.2f, appListPane, statusPanel).setDelay(0.5f, titlePanel).setStartSide(TOP, titlePanel).setStartSide(BOTTOM, appListPane, statusPanel));
 		
 		frames.put(new UIStateChange(MAIN, LOGIN), new SLKeyframe(configs.get(LOGIN), 0.6f).setEndSide(TOP, titlePanel).setEndSide(BOTTOM, appListPane).setDelay(0.2f, loginPanel).setStartSideForNewCmps(LEFT));
 	}
 	
-	public void slideTo(final UIState newState)
-	{
-		slPanel.createTransition().push(frames.get(new UIStateChange(state, newState)).setCallback(new Callback()
-		{
+	public void slideTo(final UIState newState) {
+		slPanel.createTransition().push(frames.get(new UIStateChange(state, newState)).setCallback(new Callback() {
 			@Override
-			public void done()
-			{
+			public void done() {
 				state = newState;
 			}
 		})).play();
 	}
 	
-	public static void setUsername(String s)
-	{
+	public static void setUsername(String s) {
 		username = s;
 		currentLauncher.titlePanel.userName.setText(s);
 	}
 	
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
 		internet = Helper.isInternetReachable();
 		SLAnimator.start();
 		new Game();
@@ -174,13 +160,10 @@ public class DakrorLauncher extends JFrame
 		p.put("logoString", "");
 		AcrylLookAndFeel.setTheme(p);
 		
-		try
-		{
+		try {
 			ToolTipManager.sharedInstance().setInitialDelay(0);
 			UIManager.setLookAndFeel(new AcrylLookAndFeel());
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
