@@ -112,6 +112,7 @@ public class LoginPanel extends JPanel {
 			}
 		};
 		verticalBox.add(login);
+		login.setMnemonic(KeyEvent.VK_ENTER);
 		login.setAlignmentX(Component.CENTER_ALIGNMENT);
 		login.setHorizontalAlignment(SwingConstants.LEFT);
 		login.setEnabled(!DakrorLauncher.internet);
