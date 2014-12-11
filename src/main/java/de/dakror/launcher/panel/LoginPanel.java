@@ -112,7 +112,6 @@ public class LoginPanel extends JPanel {
 			}
 		};
 		verticalBox.add(login);
-		login.setMnemonic(KeyEvent.VK_ENTER);
 		login.setAlignmentX(Component.CENTER_ALIGNMENT);
 		login.setHorizontalAlignment(SwingConstants.LEFT);
 		login.setEnabled(!DakrorLauncher.internet);
@@ -183,6 +182,8 @@ public class LoginPanel extends JPanel {
 			@Override
 			public void keyReleased(KeyEvent e) {
 				login.setEnabled(usr.getText().trim().length() > 0 && new String(pwd.getPassword()).trim().length() > 0);
+				
+				if (e.getKeyCode() == KeyEvent.VK_ENTER && login.isEnabled()) login.doClick();
 			}
 		};
 		usr.addKeyListener(ka);
