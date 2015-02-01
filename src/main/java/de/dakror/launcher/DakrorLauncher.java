@@ -125,7 +125,10 @@ public class DakrorLauncher extends JFrame {
 		
 		JLabel banner = new JLabel(new ImageIcon(Game.getImage("title.png").getScaledInstance(1000, 160, Image.SCALE_DEFAULT)));
 		
-		configs.put(LOGIN, new SLConfig(slPanel).gap(0, 0).row(250).row(1f).row(1f).row(1f).row(1f).col(1f).place(0, 0, banner).beginGrid(2, 0).row(1f).row(loginPanel.getHeight()).row(1f).col(1f).col(loginPanel.getWidth()).col(1f).place(1, 1, loginPanel).endGrid());
+		configs.put(LOGIN,
+								new SLConfig(slPanel).gap(0, 0).row(250).row(1f).row(1f).row(1f).row(1f).col(1f).place(0, 0, banner).beginGrid(2, 0).row(1f).row(loginPanel.getHeight()).row(1f).col(	1f).col(loginPanel.getWidth()).col(	1f).place(1,
+																																																																																																																		1,
+																																																																																																																		loginPanel).endGrid());
 		configs.put(MAIN, new SLConfig(slPanel).gap(0, 0).row(90).col(1f).place(0, 0, titlePanel).row(1f).place(1, 0, appListPane).row(32).place(2, 0, statusPanel));
 		
 		slPanel.setTweenManager(SLAnimator.createTweenManager());
@@ -133,9 +136,13 @@ public class DakrorLauncher extends JFrame {
 	}
 	
 	public void initSL() {
-		frames.put(new UIStateChange(LOGIN, MAIN), new SLKeyframe(configs.get(MAIN), 0.6f).setEndSideForOldCmps(LEFT).setDelay(0.2f, appListPane, statusPanel).setDelay(0.5f, titlePanel).setStartSide(TOP, titlePanel).setStartSide(BOTTOM, appListPane, statusPanel));
+		frames.put(	new UIStateChange(LOGIN, MAIN),
+								new SLKeyframe(configs.get(MAIN), 0.6f).setEndSideForOldCmps(LEFT).setDelay(0.2f, appListPane, statusPanel).setDelay(0.5f, titlePanel).setStartSide(TOP, titlePanel).setStartSide(BOTTOM,
+																																																																																																	appListPane,
+																																																																																																	statusPanel));
 		
-		frames.put(new UIStateChange(MAIN, LOGIN), new SLKeyframe(configs.get(LOGIN), 0.6f).setEndSide(TOP, titlePanel).setEndSide(BOTTOM, appListPane).setDelay(0.2f, loginPanel).setStartSideForNewCmps(LEFT));
+		frames.put(	new UIStateChange(MAIN, LOGIN),
+								new SLKeyframe(configs.get(LOGIN), 0.6f).setEndSide(TOP, titlePanel).setEndSide(BOTTOM, appListPane).setDelay(0.2f, loginPanel).setStartSideForNewCmps(LEFT));
 	}
 	
 	public void slideTo(final UIState newState) {

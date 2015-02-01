@@ -64,7 +64,8 @@ public class TitlePanel extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String link = JOptionPane.showInputDialog(DakrorLauncher.currentLauncher, "Please enter the link to your new picture.", "change profile picture", JOptionPane.QUESTION_MESSAGE);
+				String link = JOptionPane.showInputDialog(DakrorLauncher.currentLauncher, "Please enter the link to your new picture.", "change profile picture",
+																									JOptionPane.QUESTION_MESSAGE);
 				if (link == null) return;
 				
 				link = link.trim();
@@ -72,7 +73,7 @@ public class TitlePanel extends JPanel {
 				if (!link.startsWith("http")) JOptionPane.showMessageDialog(DakrorLauncher.currentLauncher, "This is no valid link!", "Invalid link!", JOptionPane.ERROR_MESSAGE);
 				else {
 					try {
-						if (Helper.getURLContent(new URL("http://dakror.de/mp-api/logo?id=" + DakrorLauncher.userId + "&password=" + DakrorLauncher.pwdMd5 + "&newlogo=" + link)).contains("true")) loadLogo();
+						if (Helper.getURLContent(new URL("http://dakror.de/mp-api/logo?id=" + DakrorLauncher.userId + "&password=" + DakrorLauncher.pwdMd5 + "&newlogo=" + link)).contains(	"true")) loadLogo();
 						else JOptionPane.showMessageDialog(DakrorLauncher.currentLauncher, "Couldn't change profile picture!", "Error!", JOptionPane.ERROR_MESSAGE);
 					} catch (MalformedURLException e1) {
 						e1.printStackTrace();
@@ -128,7 +129,11 @@ public class TitlePanel extends JPanel {
 			@Override
 			public void run() {
 				try {
-					if (DakrorLauncher.internet) userIcon.setIcon(new ImageIcon(ImageIO.read(new URL(Helper.getURLContent(new URL("http://dakror.de/mp-api/logo?id=" + DakrorLauncher.userId)))).getScaledInstance(userIcon.getPreferredSize().width, userIcon.getPreferredSize().height, Image.SCALE_SMOOTH)));
+					if (DakrorLauncher.internet)
+						userIcon.setIcon(new ImageIcon(
+																						ImageIO.read(new URL(Helper.getURLContent(new URL("http://dakror.de/mp-api/logo?id=" + DakrorLauncher.userId)))).getScaledInstance(	userIcon.getPreferredSize().width,
+																																																																																								userIcon.getPreferredSize().height,
+																																																																																								Image.SCALE_SMOOTH)));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

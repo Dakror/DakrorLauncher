@@ -60,7 +60,12 @@ public class AppPanel extends JPanel {
 		public void mousePressed(MouseEvent e) {
 			if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() == 2) {
 				try {
-					Runtime.getRuntime().exec(new String[] { "java" + (System.getProperty("os.name").toLowerCase().contains("win") ? "w" : ""), "-jar", new File(CFG.DIR, DakrorLauncher.userId + "/apps/" + app.getName().replace(" ", "-") + "/" + app.getName().replace(" ", "-") + ".jar").getPath().replace("\\", "/"), "-un=" + DakrorLauncher.username, "-upwd=" + DakrorLauncher.pwdMd5 });
+					Runtime.getRuntime().exec(new String[] {
+																				"java" + (System.getProperty("os.name").toLowerCase().contains("win") ? "w" : ""),
+																				"-jar",
+																				new File(CFG.DIR, DakrorLauncher.userId + "/apps/" + app.getName().replace(" ", "-") + "/" + app.getName().replace(" ", "-") + ".jar").getPath().replace(	"\\",
+																																																																																																	"/"),
+																				"-un=" + DakrorLauncher.username, "-upwd=" + DakrorLauncher.pwdMd5 });
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}

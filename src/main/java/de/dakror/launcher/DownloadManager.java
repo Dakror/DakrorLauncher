@@ -42,7 +42,8 @@ public class DownloadManager extends Thread {
 		
 		public void downloadVersionFile() throws Exception {
 			String escName = app.getName().replace(" ", "-");
-			Helper.copyInputStream(new URL("http://dakror.de/bin/" + escName + ".version").openStream(), new FileOutputStream(new File(CFG.DIR, DakrorLauncher.userId + "/apps/" + escName + "/" + escName + ".version")));
+			Helper.copyInputStream(new URL("http://dakror.de/bin/" + escName + ".version").openStream(), new FileOutputStream(new File(CFG.DIR, DakrorLauncher.userId + "/apps/"
+					+ escName + "/" + escName + ".version")));
 		}
 	}
 	
@@ -115,7 +116,8 @@ public class DownloadManager extends Thread {
 	}
 	
 	public void updateTitle(Download d) {
-		DakrorLauncher.currentLauncher.statusPanel.info.setText(d.status.getName() + ": " + d.app.getName() + " (" + Helper.formatBinarySize(d.size, 2) + ")" + (queue.size() > 1 ? " and " + (queue.size() - 1) + " more." : ""));
+		DakrorLauncher.currentLauncher.statusPanel.info.setText(d.status.getName() + ": " + d.app.getName() + " (" + Helper.formatBinarySize(d.size, 2) + ")"
+				+ (queue.size() > 1 ? " and " + (queue.size() - 1) + " more." : ""));
 	}
 	
 	public int getProgress() {
