@@ -182,6 +182,8 @@ public class LoginPanel extends JPanel {
 			@Override
 			public void keyReleased(KeyEvent e) {
 				login.setEnabled(usr.getText().trim().length() > 0 && new String(pwd.getPassword()).trim().length() > 0);
+				
+				if (e.getKeyCode() == KeyEvent.VK_ENTER && login.isEnabled()) login.doClick();
 			}
 		};
 		usr.addKeyListener(ka);
